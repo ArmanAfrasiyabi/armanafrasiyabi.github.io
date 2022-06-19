@@ -19,7 +19,12 @@ body.sticky-bottom-footer { padding-bottom: 0; }
 
 .profile img { width: 100%; }
 
-.smaller { line-height: 28px; }
+.smaller { line-height: 20px; }
+<style>
+  .bottom-one{
+     margin-bottom: 1cm;
+  }
+</style>
 /****************************************************************************** Publications *****************************************************************************/
 /*****************************************************************************
 * Projects
