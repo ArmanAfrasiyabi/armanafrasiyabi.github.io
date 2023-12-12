@@ -103,6 +103,25 @@
             text-align: justify;
         }
     </style>
+	
+<script type="text/javascript"> 
+  var maxImages = 6; // Update this with the number of images you have
+  var randomNumber = Math.floor(Math.random() * maxImages) + 1;
+</script>
+
+<script type="text/javascript"> 
+  function pickRandomBackground_a() {
+    var imagePath = './images/background_a' + randomNumber + '.jpg';
+    document.getElementById('randomImage').src = imagePath;
+  }
+</script>
+
+<script type="text/javascript"> 
+  function pickRandomBackground_b() {
+    var imagePath = './images/background_b' + randomNumber + '.jpg';
+    document.getElementById('randomImageB').src = imagePath;
+  }
+</script>
 
 </header>
 <section id="about" class="some-section"> 
@@ -111,14 +130,20 @@
       <div class="post"> 
       <div class="profile float-right">    
       <br /> 
-      </span> &nbsp;  </font> <br /> 
-      <div style="display:block;text-align:right"><a href="https://mila.quebec/en/person/arman-afrasiyabi/" imageanchor="10"><img align="right" src="./images/background_a.jpg" style="max-width: 100%; border="100">  
-      <font size="+1"> <span style="font-weight: 420; ">  
-      </a>  
-      </div> </div>  
-      </span> &nbsp;  </font> <br /> 
+	   
+	<body onload="pickRandomBackground_a(); pickRandomBackground_b()">
+	  <div style="display:block;text-align:right">
+		<a href="https://mila.quebec/en/person/arman-afrasiyabi/" imageanchor="10">
+		  <img id="randomImage" align="right" src="./images/background_a1.jpg" style="max-width: 100%; border="100">
+		  <font size="+1"> <span style="font-weight: 420; ">
+		  </a>
+		</div>
+	  </div> 
+
+	  &nbsp;  </font> <br /> 
 
 
+ 
 
 
 <header class="post-header">
@@ -159,13 +184,15 @@
         a beautiful village on Pale Blue Dot. 
     </article>
 
-   
+ 
 
 <div class="profile float-right">   
     <div style="display:block;text-align:right">
-        <a href="https://mila.quebec/en/person/arman-afrasiyabi/" imageanchor="10">
-            <img align="left" src="./images/background_b.jpg" style="max-width: 100%; border: 0;"> 
-        </a> 
+         
+		  <a href="https://mila.quebec/en/person/arman-afrasiyabi/" imageanchor="10">
+			<img id="randomImageB" align="left" src="./images/background_b1.jpg" style="max-width: 100%; border: 0;">
+		  </a> 
+		
         <font size="0"> 
             <a href="https://armanafrasiyabi.github.io/">arı</a> &#169;
         </font> 
