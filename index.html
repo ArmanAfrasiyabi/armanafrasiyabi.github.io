@@ -241,14 +241,16 @@
             cursor: pointer;
         }
     </style>
-    <img id="yaleGif" src="./images/yale_arman_imagery.gif" alt="Imagery reconstruction of my brain, dreaming of Yale! Stay tuned!!" onclick="reloadGif()">
+    <img id="yaleGif" src="./images/fluxbrain_news.jpg" alt="Fluxbrain News" onclick="changeImage()">
     <figcaption><font size="2">Dreaming Yale; imagery decoding of my brain! Work in progress... –click on the figure</font></figcaption>
     <script>
-        function reloadGif() {
+        function changeImage() {
             var gif = document.getElementById('yaleGif');
-            var gifSrc = gif.src;
-            gif.src = '';
-            gif.src = gifSrc;
+            if (gif.src.includes('fluxbrain_news.jpg')) {
+                gif.src = './images/yale_arman_imagery.gif';
+            } else {
+                gif.src = './images/fluxbrain_news.jpg';
+            }
         }
     </script>
 </figure>
