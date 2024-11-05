@@ -131,6 +131,22 @@ footer.sticky-bottom { border-top: 1px solid #e8e8e8; padding-top: 40px; padding
 .publications ol.bibliography li .hidden.open { max-height: 100em; -webkit-transition: 0.15s ease; -moz-transition: 0.15s ease; -ms-transition: 0.15s ease; -o-transition: 0.15s ease; transition: all 0.15s ease; }
 .publications ol.bibliography li div.abstract.hidden { border: dashed 1px var(--global-bg-color); }
 .publications ol.bibliography li div.abstract.hidden.open { border-color: var(--global-text-color); }
+.publications ol.bibliography li .pagelinks a.btn {
+    color: white;
+    background-color: #0F4D92;
+    border: 1px solid #0F4D92;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+}
+
+.publications ol.bibliography li .pagelinks a.btn:hover {
+    color: #0F4D92;
+    background-color: white;
+    border-color: #0F4D92;
+}
+
 
 code { color: var(--global-theme-color); }
 
