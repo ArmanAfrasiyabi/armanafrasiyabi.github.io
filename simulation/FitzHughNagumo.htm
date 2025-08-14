@@ -114,7 +114,8 @@
         </div>
       </div>
       <div class="card canvas-card">
-        <header><h2>Time series</h2></header>
+        <!-- NOTE ADDED HERE -->
+        <header><h2>Time series (shows up to 3 W and their Vs)</h2></header>
         <canvas id="time"></canvas>
       </div>
     </div>
@@ -141,7 +142,7 @@
       <div class="control"><label for="tau">tau</label><input id="tau" type="number" step="0.1" value="12.5"></div>
       <div class="control"><label for="dt">dt</label><input id="dt" type="number" step="0.001" value="0.05"></div>
       <div class="control"><label for="steps">steps</label><input id="steps" type="number" min="10" max="20000" step="10" value="4000"></div>
-      <div class="control"><label for="fps">fps</label><input id="fps" type="number" min="1" max="60" step="1" value="20"></div>
+      <div class="control"><label for="fps">fps</label><input id="fps" type="number" min="1" max="300" step="1" value="100"></div>
       <div class="control"><label for="trail">trail</label><input id="trail" type="number" min="2" max="2000" step="1" value="160"></div>
       <div class="control"><label for="seed">seed</label><input id="seed" type="number" step="1" value="3"></div>
     </div>
@@ -153,7 +154,7 @@
   // ------------------------- Defaults (fixed v/w limits) -------------------------
   const DEFAULTS = Object.freeze({
     N:1, I:0.5, a:0.7, b:0.8, tau:12.5, dt:0.05,
-    steps:4000, fps:20, trail:160, seed:3,
+    steps:4000, fps:100, trail:160, seed:3,
     vmin:-2.2, vmax:2.2, wmin:-1.5, wmax:3.5
   });
 
@@ -186,7 +187,6 @@
     const {pad, width: w, height: h} = tf;
     ctx.save();
 
-    // Optional light grid (disabled unless showGrid=true)
     if(showGrid){
       ctx.strokeStyle=colorGrid; ctx.lineWidth=1; ctx.beginPath();
       for(let i=0;i<=xTicks;i++){ const x=pad+i*(w-2*pad)/xTicks; ctx.moveTo(x,pad); ctx.lineTo(x,h-pad); }
@@ -194,16 +194,14 @@
       ctx.stroke();
     }
 
-    // Axis frame (box)
     ctx.strokeStyle=colorAxis; ctx.lineWidth=1.4; ctx.beginPath(); ctx.rect(pad,pad,w-2*pad,h-2*pad); ctx.stroke();
 
-    // Axis labels
     ctx.fillStyle=colorAxis;
     ctx.font='12px system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Arial';
     ctx.textAlign='center';
-    ctx.fillText(xLabel, w/2, h - pad + 26);     // X label just below axis
+    ctx.fillText(xLabel, w/2, h - pad + 26);
     ctx.save();
-    ctx.translate(pad - 26, h/2);                // Y label to the left, rotated
+    ctx.translate(pad - 26, h/2);
     ctx.rotate(-Math.PI/2);
     ctx.textAlign='center';
     ctx.fillText(yLabel, 0, 0);
@@ -250,14 +248,13 @@
       c.width=Math.round(rect.width*dpr);
       c.height=Math.round(rect.height*dpr);
       const ctx=c.getContext('2d');
-      ctx.setTransform(dpr,0,0,dpr,0,0); // draw in CSS pixels
+      ctx.setTransform(dpr,0,0,dpr,0,0);
     }
   }
   function cssSize(c){ const r=c.getBoundingClientRect(); return {w:r.width, h:r.height}; }
 
   function drawPhaseStatic(P, tf){
     const ctx=pctx; ctx.clearRect(0,0,tf.width,tf.height);
-    // Axes with labels, grid OFF
     drawAxes(ctx, tf, {xTicks:6,yTicks:6, xLabel:'v', yLabel:'w', showGrid:false});
 
     // Vector field
@@ -315,12 +312,14 @@
     ctx.fillText(`t = ${t} s`, tf.pad+8, tf.pad+16); ctx.restore();
   }
 
+  // ************* UPDATED: only plot up to 3 trajectories in time panel *************
   function drawTime(P, tf, colors, data, frame){
     const ctx=tctx; ctx.clearRect(0,0,tf.width, tf.height);
-    // Axes with labels, grid OFF
     drawAxes(ctx, tf, {xTicks:6,yTicks:6, xLabel:'Time (s)', yLabel:'v, w', showGrid:false});
 
-    for(let i=0;i<P.N;i++){
+    const M = Math.min(3, P.N); // cap to 3 W (and their Vs)
+
+    for(let i=0;i<M;i++){
       const color=colors[i];
       // v(t)
       ctx.save(); ctx.beginPath(); ctx.strokeStyle=color; ctx.lineWidth=1.6; ctx.globalAlpha=.95;
@@ -333,7 +332,6 @@
       ctx.stroke(); ctx.setLineDash([]); ctx.restore();
     }
 
-    // Cursor line
     const xcur=tf.toX(data.tAxis[frame]); ctx.save(); ctx.strokeStyle='#7e8cc2'; ctx.globalAlpha=.35; ctx.lineWidth=1;
     ctx.beginPath(); ctx.moveTo(xcur, tf.pad); ctx.lineTo(xcur, tf.height - tf.pad); ctx.stroke(); ctx.restore();
   }
