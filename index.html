@@ -1,319 +1,251 @@
-
-<!DOCTYPE html> 
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta name="google-site-verification" content="qvYiatJptV0NAFDtTd7e67Obw31YpZyOCTHmLvDvEVg" />
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="google-site-verification" content="qvYiatJptV0NAFDtTd7e67Obw31YpZyOCTHmLvDvEVg" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-<title>Arman Afrasiyabi —</title>
-<meta name="description" content="Arman Afrasiyabi –">
+  <title>Arman Afrasiyabi —</title>
+  <meta name="description" content="Arman Afrasiyabi –">
 
-<!-- Open Graph --> 
+  <!-- Bootstrap & MDB (CSS only) -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha512-MoRNloxbStBcD8z3M/2BmnT+rg4IsMxPkXaGh2zD6LGNNFE80W3onsAhRcMAMrSoyWL9xD7Ert0men7vR8LUZg=="
+        crossorigin="anonymous">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css"
+        integrity="sha512-RO38pBRxYH3SoOprtPTD86JFOclM51/XTIdEPh5j8sj4tp8jmQIx26twG52UaLi//hQldfrh7e51WzP9wuP32Q=="
+        crossorigin="anonymous">
 
-<!-- Bootstrap & MDB -->
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha512-MoRNloxbStBcD8z3M/2BmnT+rg4IsMxPkXaGh2zD6LGNNFE80W3onsAhRcMAMrSoyWL9xD7Ert0men7vR8LUZg==" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" integrity="sha512-RO38pBRxYH3SoOprtPTD86JFOclM51/XTIdEPh5j8sj4tp8jmQIx26twG52UaLi//hQldfrh7e51WzP9wuP32Q==" crossorigin="anonymous">
+  <!-- Fonts & Icons -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css"
+        integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog=="
+        crossorigin="anonymous">
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.0/css/academicons.min.css"
+        integrity="sha512-W4yqoT1+8NLkinBLBZko+dFB2ZbHsYLDdr50VElllRcNt2Q4/GSs6u71UHKxB7S6JEMCp5Ve4xjh3eGQl/HRvg=="
+        crossorigin="anonymous">
+  <link rel="stylesheet" type="text/css"
+        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700%7CRoboto+Slab:100,300,400,500,700%7CMaterial+Icons">
 
-<!-- Fonts & Icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.0/css/academicons.min.css" integrity="sha512-W4yqoT1+8NLkinBLBZko+dFB2ZbHsYLDdr50VElllRcNt2Q4/GSs6u71UHKxB7S6JEMCp5Ve4xjh3eGQl/HRvg==" crossorigin="anonymous">
-<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700%7CRoboto+Slab:100,300,400,500,700%7CMaterial+Icons">
+  <!-- Code Syntax Highlighting -->
+  <link rel="stylesheet" href="https://gitcdn.link/repo/jwarby/jekyll-pygments-themes/master/github.css">
 
-<!-- Code Syntax Highlighting -->
-<link rel="stylesheet" href="https://gitcdn.link/repo/jwarby/jekyll-pygments-themes/master/github.css">
+  <!-- Favicon & main CSS -->
+  <link rel="shortcut icon" href="favicons/img-favicon.ico">
+  <link rel="stylesheet" href="css/css-main.css">
 
-<!-- Styles -->
-<link rel="shortcut icon" href="favicons/img-favicon.ico">
-<link rel="stylesheet" href="css/css-main.css">
+  <link rel="canonical" href="/">
 
-<link rel="canonical" href="/">
+  <!-- MathJax -->
+  <script type="text/javascript">
+    window.MathJax = { tex: { tags: 'ams' } };
+  </script>
+  <script defer type="text/javascript" id="MathJax-script" src="js/es5-tex-mml-chtml.js"></script>
+  <script defer src="js/v3-polyfill.min.js"></script>
 
-<!-- JQuery -->
-<!-- jQuery -->
-<script src="js/3.5.1-jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
-
-
-<!-- Theming-->
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<!-- MathJax -->
-<script type="text/javascript">
-  window.MathJax = {
-    tex: {
-      tags: 'ams'
+  <style>
+    :root { 
+      --ink: #0d1021; 
+      --sim-blue: #0b3d91;      /* dark blue for Simulation */
+      --sim-blue-hover: #072c6a; 
+      --teach-gray: #6c757d;    /* gray for Teaching */
+      --teach-gray-hover: #5a6268;
     }
-  };
-</script>
-<script defer type="text/javascript" id="MathJax-script" src="js/es5-tex-mml-chtml.js"></script>
-<script defer src="js/v3-polyfill.min.js"></script> 
-  </head> 
-  <body class="fixed-top-nav sticky-bottom-footer"> 
-    <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top">
-    <div class="container"> 
+    article { text-align: justify; }
+    .light-blue-btn { background-color: #F0F0F0; color: #000; border: none; }
+    .light-blue-btn:hover { background-color: #FFFFFF; color: #000; }
+    .navbar .icon-bar { width: 22px; height: 2px; background-color: #333; display: block; margin: 4px 0; }
+
+    /* Button styles per your request */
+    .btn.btn-half {
+      font-size: 1.rem;          /* ~half-sized text */
+      padding: 0.125rem 0.375rem; /* tighter padding (about half of .btn-sm) */
+      line-height: 1.1;
+      border-radius: .15rem;
+    }
+    .btn.btn-sim {
+      background-color: var(--sim-blue);
+      border-color: var(--sim-blue);
+      color: #fff;
+    }
+    .btn.btn-sim:hover, .btn.btn-sim:focus {
+      background-color: var(--sim-blue-hover);
+      border-color: var(--sim-blue-hover);
+      color: #fff;
+    }
+    .btn.btn-teach {
+      background-color: var(--teach-gray);
+      border-color: var(--teach-gray);
+      color: #fff;
+    }
+    .btn.btn-teach:hover, .btn.btn-teach:focus {
+      background-color: var(--teach-gray-hover);
+      border-color: var(--teach-gray-hover);
+      color: #fff;
+    }
+
+    /* ===== Fullscreen modal for Bootstrap 4 (no scrolling on laptop/monitor) ===== */
+    #simModal .modal-dialog {
+      margin: 0 !important;        /* remove default margins */
+      width: 100vw;                 /* full viewport width */
+      max-width: 100vw;
+      height: 100vh;                /* full viewport height */
+    }
+    @supports (height: 100dvh) {
+      #simModal .modal-dialog { height: 100dvh; } /* handle dynamic browser bars */
+    }
+    #simModal .modal-content {
+      height: 100%;                 /* inherit from dialog */
+      border: 0;
+      border-radius: 0;
+      display: flex;
+      flex-direction: column;       /* header + body layout */
+    }
+    #simModal .modal-header {
+      flex: 0 0 auto;
+      padding: .5rem .75rem;        /* compact header to save space */
+    }
+    #simModal .modal-body {
+      flex: 1 1 auto;               /* take all remaining height */
+      padding: 0;                   /* no inner padding */
+      overflow: hidden;             /* prevent scrollbars */
+      display: block;
+    }
+    #simFrame {
+      display: block;
+      width: 100%;
+      height: 100%;                 /* fills modal-body exactly */
+      border: 0;
+    }
+    /* Prevent Bootstrap from adding right padding that nudges layout on open */
+    body.modal-open { padding-right: 0 !important; }
+  </style>
+
+  <script>
+    // Background helpers
+    var maxImages = 2; // Update with your available backgrounds
+    var randomNumber = Math.floor(Math.random() * maxImages) + 1;
+
+    function pickRandomBackground_a() {
+      var imagePath = './images/background_a' + randomNumber + '.jpg';
+      var el = document.getElementById('randomImage');
+      if (el) el.src = imagePath;
+    }
+    function pickRandomBackground_b() {
+      var imagePath = './images/background_b' + randomNumber + '.jpg';
+      var el = document.getElementById('randomImageB');
+      if (el) el.src = imagePath;
+    }
+  </script>
+</head>
+
+<body class="fixed-top-nav sticky-bottom-footer" onload="pickRandomBackground_a(); pickRandomBackground_b();">
+  <!-- NAVBAR -->
+  <nav id="navbar" class="navbar navbar-light navbar-expand-sm fixed-top">
+    <div class="container">
       <!-- Navbar Toggle -->
-      <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler collapsed ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav"
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar top-bar"></span>
         <span class="icon-bar middle-bar"></span>
         <span class="icon-bar bottom-bar"></span>
       </button>
+
       <div class="collapse navbar-collapse text-right" id="navbarNav">
         <ul class="navbar-nav ml-auto flex-nowrap">
-          <!-- About -->
-          <li class="nav-item active"> 
-		        <!-- <a class="nav-link" href="./about.html">
-              		about  
-                <span class="sr-only">(current)</span> 
-            </a>   -->
-            
-            <!-- <li class="nav-item ">
-              <a class="nav-link" href="./news.html">
-                news 
-              </a>
-          </li>    -->
-          
-          <li class="nav-item ">
-              <a class="nav-link" href="#publications">
-                publications 
-              </a>
-          </li> 
-		   <li class="nav-item ">
-              <a class="nav-link" href="#reports">
-                reports 
-              </a>
-          </li> 
-		  
-		  <li class="nav-item ">
-              <a class="nav-link" href="#program_committees">
-                reviews 
-              </a>
-          </li>  
-		   <li class="nav-item ">
-              <a class="nav-link" href="#presentations">
-                 presentations 
-              </a>
-          </li>      
+          <li class="nav-item active">
+            <a class="nav-link" href="#">home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="#publications">publications</a></li>
+          <li class="nav-item"><a class="nav-link" href="#reports">reports</a></li>
+          <li class="nav-item"><a class="nav-link" href="#program_committees">reviews</a></li>
+          <li class="nav-item"><a class="nav-link" href="#presentations">presentations</a></li>
         </ul>
-  </nav> 
-<style>
-        article {
-            text-align: justify;
-        }
-    </style>
-	
-<script type="text/javascript"> 
-  var maxImages = 2; // Update this with the number of images you have
-  var randomNumber = Math.floor(Math.random() * maxImages) + 1;
-</script>
+      </div>
+    </div>
+  </nav>
 
-<script type="text/javascript"> 
-  function pickRandomBackground_a() {
-    var imagePath = './images/background_a' + randomNumber + '.jpg';
-    document.getElementById('randomImage').src = imagePath;
-  }Afrasiyabi
-</script>
+  <!-- HEADER / PROFILE -->
+  <div class="container mt-5 pt-4">
+    <div class="post">
+      <div class="profile float-right">
+        <div style="display:block;text-align:right">
+          <a href="https://medicine.yale.edu/profile/arman-afrasiyabi/" imageanchor="10">
+            <img id="randomImage" align="right" src="./images/background_a2.jpg" style="max-width:100%; border:0" alt="background a">
+          </a>
+        </div>
+      </div>
 
-<script type="text/javascript"> 
-  function pickRandomBackground_b() {
-    var imagePath = './images/background_b' + randomNumber + '.jpg';
-    document.getElementById('randomImageB').src = imagePath;
-  }
-</script>
-
-</header>
-<section id="about" class="some-section"> 
-</section>     
-    <div class="container mt-1">
-      <div class="post"> 
-      <div class="profile float-right">    
-      <br /> 
-	   
-	<body onload="pickRandomBackground_a(); pickRandomBackground_b()">
-	  <div style="display:block;text-align:right">
-		<a href="https://medicine.yale.edu/profile/arman-afrasiyabi/" imageanchor="10">
-		  <img id="randomImage" align="right" src="./images/background_a2.jpg" style="max-width: 100%; border="100">
-		  <font size="+1"> <span style="font-weight: 420;">
-		  </a>
-		</div>
-	  </div> 
-
-	  &nbsp;  </font> <br /> 
-<!-- <header class="post-header">
-    <h1 class="post-title">
-        <div style="display:block;text-align:left">
-            <br />
-            <p class="smaller">
-                <font size="+3"> <span style="font-weight: 420; "> Arman</span> Afrasiyabi </font> <br />
-                <font size="+0">Ph.D., Research Scientist | </font> <font size="+1">
-                    <a href="https://twitter.com/ArmanAfrasiyabi" target="_blank" title="Twitter"><i class="fab fa-twitter pl-1 pr-1"></i></a>
-                    <a href="https://github.com/armanafrasiyabi" target="_blank" title="GitHub"><i class="fab fa-github pl-1 pr-1"></i></a>
-                    <a href="https://scholar.google.com/citations?hl=en&user=eLmbCr8AAAAJ&view_op=list_works&sortby=pubdate" target="_blank" title="Google Scholar"><i class="ai ai-google-scholar pl-1 pr-1"></i></a>
-                    <a href="https://www.linkedin.com/in/arman-afrasiyabi-40b48810b/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin pl-1 pr-1"></i></a>
+      <header class="post-header mt-3">
+        <div style="display:flex; align-items:center;">
+          <!-- Profile photo -->
+          <img src="my_photo.png" alt="Arman Afrasiyabi"
+               style="width:120px; height:120px; border-radius:50%; object-fit:cover; margin-right:15px;" />
+          <!-- Name + links -->
+          <div style="transform:translateY(-2%);">
+            <h1 class="post-title" style="margin:0;">
+              <p class="smaller" style="margin:0;">
+                <font size="+2"><span style="font-weight:420;">Arman</span> Afrasiyabi</font><br />
+                <font size="+0">Ph.D., Research Scientist&nbsp;&nbsp;</font><br>
+                <font size="+1">
+                  <a href="https://twitter.com/ArmanAfrasiyabi" target="_blank" rel="noopener" title="Twitter"><i class="fab fa-twitter pl-1 pr-1"></i></a>
+                  <a href="https://github.com/armanafrasiyabi" target="_blank" rel="noopener" title="GitHub"><i class="fab fa-github pl-1 pr-1"></i></a>
+                  <a href="https://scholar.google.com/citations?hl=en&amp;user=eLmbCr8AAAAJ&amp;view_op=list_works&amp;sortby=pubdate"
+                     target="_blank" rel="noopener" title="Google Scholar"><i class="ai ai-google-scholar pl-1 pr-1"></i></a>
+                  <a href="https://www.linkedin.com/in/arman-afrasiyabi-40b48810b/" target="_blank" rel="noopener" title="LinkedIn"><i class="fab fa-linkedin pl-1 pr-1"></i></a>
                 </font>
-    </h1>
-</header> -->
-<header class="post-header">
-  <!-- Flex container: photo on the left, text on the right -->
-  <div style="display:flex; align-items:center;">
-    
-    <!-- Profile photo -->
-    <img src="my_photo.png"
-         alt="Arman Afrasiyabi"
-         style="width:120px; height:120px; border-radius:50%; object-fit:cover; margin-right:15px;" />
-    
-    <!-- Text block, shifted up so it starts around the photo’s midpoint -->
-    <div style="transform:translateY(-2%);">
-      <h1 class="post-title" style="margin:0;">
-        <p class="smaller" style="margin:0;">
-          <font size="+2"><span style="font-weight:420;">Arman</span> Afrasiyabi</font><br />
-          <font size="+0">Ph.D., Research Scientist&nbsp;&nbsp;</font>
-          <br>
-          <font size="+1">
-            <a href="https://twitter.com/ArmanAfrasiyabi" target="_blank" title="Twitter">
-              <i class="fab fa-twitter pl-1 pr-1"></i>
-            </a>
-            <a href="https://github.com/armanafrasiyabi" target="_blank" title="GitHub">
-              <i class="fab fa-github pl-1 pr-1"></i>
-            </a>
-            <a href="https://scholar.google.com/citations?hl=en&amp;user=eLmbCr8AAAAJ&amp;view_op=list_works&amp;sortby=pubdate"
-               target="_blank" title="Google Scholar">
-              <i class="ai ai-google-scholar pl-1 pr-1"></i>
-            </a>
-            <a href="https://www.linkedin.com/in/arman-afrasiyabi-40b48810b/" target="_blank" title="LinkedIn">
-              <i class="fab fa-linkedin pl-1 pr-1"></i>
-            </a>
-          </font>
+              </p>
+            </h1>
+          </div>
+        </div>
+      </header>
+
+      <!-- BIO -->
+      <article class="mt-3">
+        <p>
+          Hi! I am an associate research scientist in the
+          <a href="https://medicine.yale.edu/neurosurgery/">Neurosurgery Department</a> at
+          <a href="https://www.yale.edu/">Yale University</a>, working at the intersection of interpretable multimodal
+          deep learning, time-series analysis, large language models, and representation learning, with applications in
+          mind reading, neuroscience, biology, and computer vision. Before joining Yale, I received my Ph.D. from
+          <a href="https://www.ulaval.ca/en">Université Laval</a> and <a href="https://mila.quebec/en/">Mila</a>, the
+          Montreal-based AI institute.
+          <em>I’m passionate about teaching and physics-based simulations.</em>
         </p>
-      </h1>
-    </div> 
-  </div>
-</header> 
-    <article>
-        <div class="clearfix"></div> 
-        <!DOCTYPE html>
-<html>
-<head>
-    <title>Profile</title>
-</head>
-<body>
-  <br>          
-    <p> Hi! I am an associate research scientist in the <a href="https://medicine.yale.edu/neurosurgery/"> Neurosurgery Department</a> at <a href="https://www.yale.edu/">Yale University</a>, working at the intersection of interpretable multimodal deep learning, time-series analysis, large language models, and representation learning, with applications in mind reading, neuroscience, biology, and computer vision. Before joining Yale, I received my Ph.D. from <a href="https://www.ulaval.ca/en">Université Laval</a> and <a href="https://mila.quebec/en/">Mila</a>, the Montreal-based AI institute.
-      <!-- Hi! I am an associate research scientist at <a href="https://www.yale.edu/">Yale University</a>—Neurosurgery, working at the intersection of interpretable multi-modal deep learning, time series analysis, large language models, and representation learning, with applications in neuroscience, biology, and computer vision. -->
-    <!-- </p> -->
-    <!-- <p> -->
-      <!-- Prior to Yale, I received my Ph.D. from <a href="https://www.ulaval.ca/en">Université Laval</a> and <a href="https://mila.quebec/en/">Mila</a>—Montreal-based AI Institute. -->
-      <!-- , advised by <a href="http://vision.gel.ulaval.ca/~jflalonde/">Jean-François Lalonde</a> and <a href="http://vision.gel.ulaval.ca/~cgagne/english.html">Christian Gagné</a>, where my research focused on representation learning and meta-learning in limited data situations. My last Ph.D. <a href="https://lvsn.github.io/SetFeat/">project</a> was a collaboration with <a href="https://mila.quebec/en/person/hugo-larochelle/">Hugo Larochelle</a>.</p> -->
-    <!-- <p>Prior to my Ph.D. in Canada, I was with the <a href="https://image.ceng.metu.edu.tr/index.html">Image Lab</a> and obtained my M.S. from <a href="https://www.metu.edu.tr/">METU</a>, where I worked on brain decoding.</p> -->
-</body>
-</html>
+      </article>
 
-    </article>
-
- 
-
-<div class="profile float-right">   
-    <div style="display:block;text-align:right">
-         
-		  <a href="https://medicine.yale.edu/profile/arman-afrasiyabi/" imageanchor="10">
-			<img id="randomImageB" align="left" src="./images/background_b2.jpg" style="max-width: 100%; border: 0;">
-		  </a> 
-        <font size="0"> 
+      <!-- Left background image -->
+      <div class="profile float-right" style="margin-top:-8px;">
+        <div style="display:block;text-align:right">
+          <a href="https://medicine.yale.edu/profile/arman-afrasiyabi/" imageanchor="10">
+            <img id="randomImageB" align="left" 
+                src="./images/background_b2.jpg" 
+                style="max-width:100%; border:0; margin-top:-20px;" 
+                alt="background b">
+          </a>
+          <font size="0">
             <a href="https://armanafrasiyabi.github.io/">arı</a> &#169;
-        </font> 
-    </div>   
-	<p>
-        <!-- <span style="font-weight: 470;">Affiliations and collaborations</span> 
-        <font size="1">   
-            <ul>
-                <li><a href="https://cpsc.yale.edu/" ><strong>  Computer Science, Yale</strong></a>.</li>  
-				<li><a href="https://medicine.yale.edu/" ><strong>  Yale School of Medicine</strong></a>.</li>  
-				<li><a href="https://wti.yale.edu/" ><strong> Wu Tsai Institute, Yale</strong></a>.</li>  
-				<li><a href="https://mila.quebec/en/" ><strong>  Mila, Quebec</strong></a>.</li>   
- </ul>        </font> -->
+          </font>
+        </div>
+      </div>
 
-    <!-- </p>   
-    <p>
-        <span style="font-weight: 470;">News</span> 
-        <font size="1">   
-            <ul>
-                <li>14/7/23 &nbsp; <a href="https://arxiv.org/abs/2304.09691" ><strong> DarSwin</strong></a> accepted to <strong>ICCV</strong>.</li> 
-                <li>15/1/23 &nbsp; starting my postdoc!</li>  
-                <li>7/06/22 &nbsp; defended my Ph.D. <strong>thesis</strong>! </li>                        
-		    
- </ul>        </font>
-    </p> 
-    <font size="3">  
-        <a class="action text" href="./news.html">More News →</a>  
-    </font> -->
-</div>
+      <!-- Contact + Buttons -->
+      <div class="mt-3 mb-4">
+        <button id="btnSimulation" class="btn btn-sim btn-half">FitzHugh–Nagumo Sim. </button>
+        <button class="btn btn-teach btn-half" disabled title="Coming soon">Teaching</button>
+        </div>
+        <p class="mt-4 mb-1">Contact:</p>
+        <p style="margin-top:0.25rem;">
+          <span style="display:inline-block; margin-left:2em;">arman.afrasiyabi@yale[dot]edu</span>
+        </p> 
+    </div>
 
-
-</article> 
-
-<!-- <figure> 
-    <style>
-        img {
-            width: 63%;
-            height: auto;
-        }
-
-        img:hover {
-            cursor: pointer;
-        }
-    </style>
-    <img id="yaleGif" src="./images/fluxbrain_news.jpg" alt="Fluxbrain News" onclick="changeImage()">
-    <figcaption><font size="2">Dreaming Yale; imagery decoding of my brain! Work in progress... –click on the figure</font></figcaption>
-    <script>
-        function changeImage() {
-            var gif = document.getElementById('yaleGif');
-            if (gif.src.includes('fluxbrain_news.jpg')) {
-                gif.src = './images/yale_arman_imagery.gif';
-            } else {
-                gif.src = './images/fluxbrain_news.jpg';
-            }
-        }
-    </script>
-</figure> -->
-
-<style>
-    .light-blue-btn {
-        background-color: #F0F0F0; /* Dark blue color */
-        color: #fff; /* White text color */
-        border: none; /* Optional: removes border */
-    }
-
-    .light-blue-btn:hover {
-        background-color: #FFFFFF; /* Slightly lighter blue for hover effect */
-        color: #fff; /* Ensuring text color remains white on hover */
-    }
-</style>
-
-
-
-
-<p style="margin: 0 0 20px 0;">
-  <!-- Add content here -->
-</p>
-<p style="margin-top:10px;">
-  Contact:<br>
-  <span style="display:inline-block; margin-top:2px; margin-left:2em;">
-    arman.afrasiyabi@yale[dot]edu
-  </span><br>
-  <!-- <span style="display:inline-block; margin-top:4px; margin-left:0.75em;">
-    arman.afrasiyabi@gmail[dot]com
-  </span> -->
-</p>
-<!-- <p href="https://www.yale.edu/">Yale University</a> -->
-<p style="margin: 0 0 80px 0;">
-  <!-- Add content here -->
-</p>  
-</p>
-
-
-
-<p style="margin: 0 0 100px 0;"></p>
+ <p style="margin: 0 0 100px 0;"></p>
   <!-- Add content here -->
 </p>
 
@@ -546,91 +478,164 @@
 	  [<a href="https://scholar.google.com/citations?hl=en&user=eLmbCr8AAAAJ&view_op=list_works&sortby=pubdate" target="_blank" title="Google Scholar"><i class="ai ai-google-scholar pl-1 pr-1"></i><a>] see my <a href="https://scholar.google.com/citations?hl=en&user=eLmbCr8AAAAJ&view_op=list_works&sortby=pubdate">Google Scholar</a> for all the publications.
 </section>   
 
+  <!-- TEACHING EXPERIENCE -->
+  <section id="teaching_experience" class="some-section">
+    <div class="container">
+      <br>
+      <h3><strong>Teaching Experience</strong></h3>
+      <div class="home">
+        <ul style="font-size: 0.9rem;">
+          <li><strong>Lecturer</strong>, NeuroAI—Artificial Deep Neural Networks for Natural Neural Dynamics, Yale University — Summer&nbsp;2025</li>
+          <li><strong>Guest co-Lecturer</strong>, Theoretical Machine Learning and Applications (CPSC 452/552), Yale University — Spring&nbsp;2025</li>
+          <li><strong>Teaching Assistant</strong>, Deep Learning (CEng&nbsp;783), Middle East Technical University — Fall&nbsp;2016</li>
+          <li><strong>Teaching Assistant</strong>, Pattern Recognition (CEng&nbsp;564), Middle East Technical University — Spring&nbsp;2015</li>
+          <li><strong>Teaching Assistant</strong>, Data Structures (CEng&nbsp;213), Middle East Technical University — Spring&nbsp;2016</li>
+        </ul>
+      </div>
+    </div>
+  </section>
 
-<section id="teaching_experience" class="some-section">
-  <br>
-  <h3><strong>Teaching Experience</strong></h3>
-  <div class="home">
-    <h1 class="page-heading"></h1>
-    <ul style="font-size: 0.9rem;">
-      <li><strong>Lecturer</strong>, NeuroAI—Artificial Deep Neural Networks for Natural Neural Dynamics, Yale University — Summer&nbsp;2025</li>
-      <li><strong>Guest co‑Lecturer</strong>, Theoretical Machine Learning and Applications (CPSC 452/552), Yale University — Spring&nbsp;2025</li>
-      <li><strong>Teaching Assistant</strong>, Deep Learning (CEng&nbsp;783), Middle East Technical University — Fall&nbsp;2016</li>
-      <li><strong>Teaching Assistant</strong>, Pattern Recognition (CEng&nbsp;564), Middle East Technical University — Spring&nbsp;2015</li>
-      <li><strong>Teaching Assistant</strong>, Data Structures (CEng&nbsp;213), Middle East Technical University — Spring&nbsp;2016</li>
-    </ul>
+  <!-- REVIEWER -->
+  <section id="program_committees" class="some-section">
+    <div class="container">
+      <br>
+      <h3><strong>Reviewer</strong></h3>
+      <div class="home">
+        <ul style="font-size: 0.9rem;">
+          <li>NeurIPS-2023, ICLR-2023, TIP-2023, TNN-2023, CVPR-2023, NeurIPS-2022, CVPR-2022, ICLR-2022, ICCV-2021, 3DV-2021, and MAIS-2021.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRESENTATIONS -->
+  <section id="presentations" class="some-section">
+    <div class="container">
+      <br>
+      <h3><strong>Talks and presentations</strong></h3>
+      <div class="home">
+        <div class="d-flex flex-wrap">
+          <iframe src="https://www.youtube.com/embed/ksuAW9PbXS8" height="160" width="240" frameborder="0" allowfullscreen=""></iframe>
+          <iframe src="https://www.youtube.com/embed/DxMCHCQKDCQ" height="160" width="240" frameborder="0" allowfullscreen=""></iframe>
+          <iframe src="https://www.youtube.com/embed/o2Y98efPqkg" height="160" width="240" frameborder="0" allowfullscreen=""></iframe>
+        </div>
+        <ul>
+          <li>In Aug. 2023 I gave a talk on my Postdoc projects to <a href="https://braindynamicslab.github.io/team/manish-saggar/">Brain Dynamics Lab </a> at <a href="https://www.stanford.edu/">Stanford University</a>.</li>
+          <li>In Feb. 2022, I gave a talk on my PHD projects to Prof. <a href="https://www.krishnaswamylab.org/">Smita Krishnaswamy</a>'s research group at <a href="https://www.yale.edu/">Yale</a>.</li>
+          <li>At <strong>CVPR</strong> 2022, we are presenting Matching feature sets for few-shot image classification.</li>
+          <li>In 12th Feb. 2022, upon the invitation (<a href="https://www.linkedin.com/posts/computer-vision-talks_cvtarmanafrasiyabi-activity-6897768952760807424-Fb-B">invitation link</a>) of <strong>Computer Vision Talks</strong>, I presented our MixtFSL.</li>
+          <li>At <strong>ICCV</strong> 2021, I am presenting Mixture-based feature space learning for few-shot... <a href="https://www.youtube.com/watch?v=DxMCHCQKDCQ">[video]</a></li>
+          <li>On 26, Feb 2021, I presented Transformers to Prof. <a href="http://vision.gel.ulaval.ca/~jflalonde/">Jean-François Lalonde's</a> research group. <a href="./pdfs/ArmanPresentation_Transfoermers.pdf">[my slides]</a></li>
+          <li>In Feb 2021, I gave a presentation on PMM and Ass. Alignment at <a href="https://iid.hbw01.fsg.ulaval.ca/evenements/seminaire-iid-associative-alignment-for-few-shot-image-classification/">IID</a>, Université Laval. <a href="./pdfs/ArmanPresentation_8Feb2020_IID.pdf">[my slides]</a></li>
+          <li>At <strong>ECCV</strong> 2020, I presented our work “Associative Alignment for Few-shot Classification”. <a href="https://lvsn.github.io/associative-alignment/">[video]</a></li>
+          <li>In July 2020, I gave a talk on "Advances in few-shot learning" at the IFT 6501 course. <a href="./pdfs/26-6-2020 advances in few-shot learning .pdf">[my slides]</a></li>
+          <li>In March 2020, I gave a talk on my last research project at IID</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- REPORTS -->
+  <section id="reports" class="some-section">
+    <div class="container">
+      <br>
+      <h3><strong>Reports and proposal</strong></h3>
+      <div class="home">
+        <ul style="font-size: 0.9rem;">
+          <li>At the end of the first year of the M.S. (under the initial supervision of Prof. <a href="https://eee.metu.edu.tr/personel/ilkay-ulusoy">Ilkay Ulusoy</a>), I prepared three reports on dynamic causal modeling (DCM) of the human brain:
+            <a href="./pdfs/DCM Report I (Arman Afrasiyabi).pdf"><strong>[Report I]</strong></a>,
+            <a href="./pdfs/DCM Report II(Arman Afrasiyabi).pdf"><strong>[Report II]</strong></a>,
+            and <a href="./pdfs/DCM Report III(Arman Afrasiyabi).pdf"><strong>[Report III]</strong></a>.
+          </li>
+          <li>At the second year of my Ph.D., I successfully passed my <strong>PhD.</strong> exams:
+            <a href="./pdfs/2019,01,16 Only_Presentation for PhDProposal (Arman Afrasiyabi).pdf">[presentation]</a> and
+            <a href="https://github.com/ArmanAfrasiyabi/talks-presentations-repots/blob/master/retrospective%20and%20prospective%20evaluations/Reducing%20the%20need%20for%20large%20labeleddataset%20in%20the%20learning%20to%20learn%20framework.pdf">[proposal]</a>.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIMULATION MODAL (fullscreen, no scrolling) -->
+  <div class="modal fade" id="simModal" tabindex="-1" role="dialog" aria-labelledby="simModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">  <!-- full-sized by CSS -->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h6 class="modal-title" id="simModalLabel">FitzHugh–Nagumo Simulation</h6>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-body">
+          <iframe id="simFrame" src="" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
   </div>
-</section>
 
- 
-<section id="program_committees" class="some-section">
-  <br> 
-  <h3><strong>Reviewer</strong></h3>   
-  <div class="home">
-    <h1 class="page-heading"></h1>
-    <ul style="font-size: 0.9rem;">
-      <li>  NeurIPS-2023, ICLR-2023, TIP-2023, TNN-2023, CVPR-2023, NeurIPS-2022, CVPR-2022, ECCV-2022, ICLR-2022, ICCV-2021, 3DV-2021, and MAIS-2021.</li>   
-    </ul>
-  </div> 
-</section>
- 
- 
- 
- 
-<section id="presentations" class="some-section">
-  <br>   
-  <h3><strong>Talks and presentations</strong></h3> 
+  <!-- JS: jQuery → Popper → Bootstrap (reliable CDNs). Remove local JS that might fail. -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"
+          integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+          crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+          integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+          crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+          integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+          crossorigin="anonymous"></script>
 
-  <div class="home">
-    <h1 class="page-heading"></h1>   
-    <ul>
-    	 
-    	<iframe src="https://www.youtube.com/embed/ksuAW9PbXS8" height="160" width="240" frameborder="0" allowfullscreen=""></iframe>                
-    	<iframe src="https://www.youtube.com/embed/DxMCHCQKDCQ" height="160" width="240" frameborder="0" allowfullscreen=""></iframe>
-    	<iframe src="https://www.youtube.com/embed/o2Y98efPqkg" height="160" width="240" frameborder="0" allowfullscreen=""></iframe>
-    	
-     
-      <li>In Aug. 2023 I gave a talk on my Postdoc projects to <a href="https://braindynamicslab.github.io/team/manish-saggar/">Brain Dynamics Lab </a> at <a href=https://www.stanford.edu/>Stanford University</a>.</li>
-      <li>In Feb. 2022, I gave a talk on my PHD projects to Prof. <a href="https://www.krishnaswamylab.org/">Smita Krishnaswamy</a>'s research group at <a href=https://www.yale.edu/>Yale</a>.</li>
-      <li>At <strong>CVPR</strong> 2022, we are presenting Matching feature sets for few-shot image classification.</li> 
-      <li>In 12th Feb. 2022, upon the invitation (<a href="https://www.linkedin.com/posts/computer-vision-talks_cvtarmanafrasiyabi-activity-6897768952760807424-Fb-B">invitation link</a>) of <strong>Computer Vision Talks</strong>, I presented our MixtFSL. </li>  
-      <li>At <strong>ICCV</strong> 2021, I am presenting Mixture-based feature space learning for few-shot... <a href="https://www.youtube.com/watch?v=DxMCHCQKDCQ">[video]</a> </li> 
-      <li> On 26, Feb 2021, I presented Transformers to Prof. <a href="http://vision.gel.ulaval.ca/~jflalonde/">Jean-François Lalonde's</a> research group. <a href="./pdfs/ArmanPresentation_Transfoermers.pdf">[my slides]</a></li>
-      <li>In Feb 2021, I gave a presentation on PMM and Ass. Alignment at <a href="https://iid.hbw01.fsg.ulaval.ca/evenements/seminaire-iid-associative-alignment-for-few-shot-image-classification/">IID</a>, Université Laval. <a href="./pdfs/ArmanPresentation_8Feb2020_IID.pdf">[my slides]</a></li>
-      <li>At <strong>ECCV</strong> 2020, I presented our work “Associative Alignment for Few-shot Classification”. <a href="https://lvsn.github.io/associative-alignment/">[video]</a></li>
-      <li>In July 2020, I gave a talk on "Advances in few-shot learning" at the IFT 6501 course. <a href="./pdfs/26-6-2020 advances in few-shot learning .pdf">[my slides]</a></li>  
-      <li>In March 2020, I gave a talk on my last research project at <a href="https://iid.hbw01.fsg.ulaval.ca/evenements/seminaire-iid-associative-alignment-for-few-shot-image-classification/">IID</a></li>  
+  <!-- Optional: your other JS (kept, but these don't affect the modal) -->
+  <script defer src="js/dist-masonry.pkgd.min.js"></script>
+  <script defer src="js/imagesloaded@4-imagesloaded.pkgd.min.js"></script>
+  <script defer src="js/js-mansory.js" type="text/javascript"></script>
+  <script defer src="js/js-common.js"></script>
 
-  </body>
-  
-  
-</section>
-	      
-<section id="reports" class="some-section">
-  <br>
-  <h3><strong>Reports and proposal</strong></h3>   
-  <div class="home">
-    <h1 class="page-heading"></h1>
-    <ul style="font-size: 0.9rem;">
-      <li>At the end of the first year of the M.S. (under the initial supervision of Prof. <a href="https://eee.metu.edu.tr/personel/ilkay-ulusoy">Ilkay Ulusoy</a>), I prepared three reports on dynamic causal modeling (DCM) of the human brain:
-        <a href="./pdfs/DCM Report I (Arman Afrasiyabi).pdf"><strong>[Report I]</strong></a>,
-        <a href="./pdfs/DCM Report II(Arman Afrasiyabi).pdf"><strong>[Report II]</strong></a>, and
-        <a href="./pdfs/DCM Report III(Arman Afrasiyabi).pdf"><strong>[Report III]</strong></a>.</li>
-      <li>At the second year of my Ph.D., I successfully passed my <strong>PhD. </strong> exams: <a href="./pdfs/2019,01,16 Only_Presentation for PhDProposal (Arman Afrasiyabi).pdf">[presentation]</a> and <a href="https://github.com/ArmanAfrasiyabi/talks-presentations-repots/blob/master/retrospective%20and%20prospective%20evaluations/Reducing%20the%20need%20for%20large%20labeleddataset%20in%20the%20learning%20to%20learn%20framework.pdf">[proposal]</a>.</li>
-    </ul>
-  </div>
-</section>
+  <!-- Simulation button handler + sizing helper -->
+  <script>
+    // Keep iframe exactly viewport-height minus header (no scroll on laptop screens)
+    function sizeSim() {
+      var modal = document.getElementById('simModal');
+      if (!modal) return;
+      var header = modal.querySelector('.modal-header');
+      var body   = modal.querySelector('.modal-body');
+      var frame  = document.getElementById('simFrame');
 
-<!-- Include Bootstrap and MDB JavaScript libraries -->
-<script src="js/umd-popper.min.js" integrity="sha512-eUQ9hGdLjBjY3F41CScH3UX+4JDSI9zXeroz7hJ+RteoCaY+GP/LDoM8AO+Pt+DRFw3nXqsjh9Zsts8hnYv8/A==" crossorigin="anonymous"></script>
-<script src="js/js-bootstrap.min.js" integrity="sha512-M5KW3ztuIICmVIhjSqXe01oV2bpe248gOxqmlcYrEzAvws7Pw3z6BK0iGbrwvdrUQUhi3eXgtxp5I8PDo9YfjQ==" crossorigin="anonymous"></script>
-<script src="js/js-mdb.min.js" integrity="sha512-Mug9KHKmroQFMLm93zGrjhibM2z2Obg9l6qFG2qKjXEXkMp/VDkI4uju9m4QKPjWSwQ6O2qzZEnJDEeCw0Blcw==" crossorigin="anonymous"></script>
+      var vh = (window.visualViewport ? window.visualViewport.height : window.innerHeight);
+      var headerH = header ? header.offsetHeight : 0;
+      var targetH = Math.max(0, vh - headerH);
 
-<!-- Include Masonry and imagesLoaded JavaScript libraries -->
-<script defer src="js/dist-masonry.pkgd.min.js"></script>
-<script defer src="js/imagesloaded@4-imagesloaded.pkgd.min.js"></script>
-<script defer src="js/js-mansory.js" type="text/javascript"></script>
+      // Set explicit heights to avoid sub-pixel overflow
+      body.style.height  = targetH + 'px';
+      frame.style.height = targetH + 'px';
+    }
 
-<!-- Load Common JavaScript -->
-<script src="js/js-common.js"></script>
+    // Recompute when modal is shown and when window resizes
+    $('#simModal').on('show.bs.modal shown.bs.modal', sizeSim);
+    window.addEventListener('resize', function () {
+      if ($('#simModal').hasClass('show')) sizeSim();
+    });
+
+    // Button handler + inject CSS into the sim page (same-origin) to prevent inner scroll
+    document.addEventListener('DOMContentLoaded', function () {
+      var btn = document.getElementById('btnSimulation');
+      var frame = document.getElementById('simFrame');
+
+      btn.addEventListener('click', function () {
+        frame.src = 'simulation/FitzHughNagumo.htm';
+        $('#simModal').modal('show');
+      });
+
+      frame.addEventListener('load', function () {
+        sizeSim(); // ensure correct height once content is loaded
+        try {
+          // If same-origin, force the sim page to be non-scrolling too
+          var doc = frame.contentDocument || frame.contentWindow.document;
+          var style = doc.createElement('style');
+          style.textContent = 'html,body{height:100%;margin:0;overflow:hidden}';
+          doc.head.appendChild(style);
+        } catch (e) {
+          // Cross-origin: ignore
+        }
+      });
+    });
+  </script>
+</body>
 </html>
