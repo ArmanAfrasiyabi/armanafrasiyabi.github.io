@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Interactive FitzHugh–Nagumo (Phase Plane + Time Series)</title>
+  <style>
+    :root{
+      --bg:#0b1020; --panel:#121a33; --ink:#e7ecff; --muted:#9fb2ff;
+      --accent:#7aa2ff; --grid:#1d2748; --axis:#7e8cc2;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Helvetica Neue,Arial,Noto Sans;
+      color:var(--ink);
+      background:radial-gradient(1200px 600px at 20% -10%, #1a2444 0%, #0b1020 40%, #090e1d 100%);
+    }
+    .wrap{max-width:1200px;margin:32px auto;padding:0 16px}
+    .card{
+      background:var(--panel);
+      border-radius:14px;border:1px solid #1d2443;
+      box-shadow:0 10px 30px rgba(0,0,0,.35)
+    }
+    header.page-title{display:flex;align-items:center;gap:10px;justify-content:center;margin:12px 0}
+    header.page-title h1{font-size:18px;margin:0;color:var(--muted);letter-spacing:.2px}
+
+    .stage{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:10px}
+    .canvas-card{position:relative;}
+    .canvas-card header{
+      position:absolute;left:10px;top:10px;
+      background:rgba(12,16,35,.6);backdrop-filter:blur(6px);
+      border:1px solid #2a325b;border-radius:10px;padding:6px 10px
+    }
+    .canvas-card header h2{margin:0;font-size:12px;color:var(--muted);letter-spacing:.3px}
+    canvas{display:block;width:100%;height:520px;border-radius:14px;background:#0a1026}
+    .legend{
+      position:absolute;right:12px;bottom:12px;background:rgba(12,16,35,.6);
+      border:1px solid #2a325b;border-radius:10px;
+      padding:8px 10px;color:var(--ink);font-size:12px
+    }
+    .legend .item{display:flex;align-items:center;gap:8px;margin:4px 0}
+    .swatch{width:30px;height:0;border-top:3px solid currentColor}
+    .swatch.dashed{border-top-style:dashed}
+
+    /* ---------- SINGLE-ROW CONTROL BAR ---------- */
+    .controls{
+      display:flex;
+      flex-wrap:nowrap;
+      align-items:flex-end;
+      gap:8px;
+      padding:10px 12px;
+      margin-top:10px;
+      overflow-x:auto;
+      scrollbar-width:thin;
+    }
+    .row{
+      display:flex;gap:8px;align-items:center;
+      flex:0 0 auto;
+      padding-right:8px;
+      border-right:1px solid #24305a;
+      margin-right:6px;
+    }
+    .btn{
+      cursor:pointer;border:none;border-radius:12px;
+      padding:8px 12px;font-weight:600;
+      color:#0a0f20;background:var(--accent);
+      flex:0 0 auto;
+      white-space:nowrap;
+    }
+    .btn.secondary{background:#24305a;color:var(--ink);border:1px solid #33407a}
+
+    .spacer{flex:0 0 10px; height:1px;}
+
+    .control{
+      display:flex;flex-direction:column;gap:2px;
+      flex:0 0 auto;
+      width:72px;
+    }
+    .control label{
+      font-size:10px;color:var(--muted);
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    }
+    .control input{
+      background:#0e1530;color:var(--ink);
+      border:1px solid #28335f;border-radius:10px;
+      padding:4px 6px;
+      outline:none;
+      width:100%;
+      font-size:12px;
+    }
+    .control input:focus{border-color:#3a56a8;box-shadow:0 0 0 3px rgba(122,162,255,.2)}
+
+    .footer{color:#9fb2ff78;margin-top:10px;font-size:12px;text-align:center}
+
+    @media (max-width:980px){
+      .stage{grid-template-columns:1fr}
+      canvas{height:440px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+
+    <!-- PLOTS ON TOP -->
+    <div class="stage">
+      <div class="card canvas-card">
+        <header><h2>Phase plane</h2></header>
+        <canvas id="phase"></canvas>
+        <div class="legend">
+          <div class="item"><span class="swatch" style="color:#e7ecff"></span> dv/dt = 0</div>
+          <div class="item"><span class="swatch dashed" style="color:#e7ecff"></span> dw/dt = 0</div>
+        </div>
+      </div>
+      <div class="card canvas-card">
+        <header><h2>Time series</h2></header>
+        <canvas id="time"></canvas>
+      </div>
+    </div>
+
+    <!-- TITLE IN THE MIDDLE -->
+    <header class="page-title">
+      <h1>Interactive FitzHugh–Nagumo • Phase plane + time series</h1>
+    </header>
+
+    <!-- CONTROLS -->
+    <div class="card controls" id="controls">
+      <div class="row">
+        <button class="btn" id="runBtn">Play</button>
+        <button class="btn secondary" id="pauseBtn" title="Pause/Resume">Pause</button>
+        <button class="btn secondary" id="resetBtn" title="Reset to defaults">Reset</button>
+      </div>
+
+      <div class="spacer"></div>
+
+      <div class="control"><label for="N">N</label><input id="N" type="number" min="1" max="2000" step="1" value="1"></div>
+      <div class="control"><label for="I">I</label><input id="I" type="number" step="0.01" value="0.5"></div>
+      <div class="control"><label for="a">a</label><input id="a" type="number" step="0.01" value="0.7"></div>
+      <div class="control"><label for="b">b</label><input id="b" type="number" step="0.01" value="0.8"></div>
+      <div class="control"><label for="tau">tau</label><input id="tau" type="number" step="0.1" value="12.5"></div>
+      <div class="control"><label for="dt">dt</label><input id="dt" type="number" step="0.001" value="0.05"></div>
+      <div class="control"><label for="steps">steps</label><input id="steps" type="number" min="10" max="20000" step="10" value="4000"></div>
+      <div class="control"><label for="fps">fps</label><input id="fps" type="number" min="1" max="60" step="1" value="20"></div>
+      <div class="control"><label for="trail">trail</label><input id="trail" type="number" min="2" max="2000" step="1" value="160"></div>
+      <div class="control"><label for="seed">seed</label><input id="seed" type="number" step="1" value="3"></div>
+    </div>
+
+    <div class="footer">Tip: increase <b>I</b> a bit (e.g., 0.5 → 0.6) for repetitive spiking; lower for single transients.</div>
+  </div>
+
+  <script>
+  // ------------------------- Defaults (fixed v/w limits) -------------------------
+  const DEFAULTS = Object.freeze({
+    N:1, I:0.5, a:0.7, b:0.8, tau:12.5, dt:0.05,
+    steps:4000, fps:20, trail:160, seed:3,
+    vmin:-2.2, vmax:2.2, wmin:-1.5, wmax:3.5
+  });
+
+  function $(id){return document.getElementById(id)}
+  function clamp(x,min,max){return Math.max(min, Math.min(max, x))}
+
+  // RNG + colors
+  function makeRNG(seed){ let s=(seed>>>0)||1; return ()=>{ s=(1664525*s+1013904223)>>>0; return s/0x100000000; }; }
+  function randUniform(rng,a,b){ return a+(b-a)*rng(); }
+  function makeColors(n){ const c=[]; for(let i=0;i<n;i++){ const h=(360*i/Math.max(1,n))|0; c.push(`hsl(${h} 90% 65%)`); } return c; }
+
+  // Transform (work in CSS pixels)
+  function makeTransform(xmin,xmax,ymin,ymax,width,height,pad=42){
+    const sx=(width-2*pad)/(xmax-xmin), sy=(height-2*pad)/(ymax-ymin);
+    return {
+      toX: x=> pad + (x-xmin)*sx,
+      toY: y=> height - pad - (y-ymin)*sy,
+      fromX: X=> xmin + (X-pad)/sx,
+      fromY: Y=> ymin + (height - pad - Y)/sy,
+      pad, sx, sy, width, height
+    };
+  }
+
+  // Axes (labels added; gridlines optional and OFF by default)
+  function drawAxes(ctx, tf, {
+    xTicks=6, yTicks=6,
+    colorAxis='#7e8cc2', colorGrid='#1d2748',
+    xLabel='', yLabel='', showGrid=false
+  } = {}){
+    const {pad, width: w, height: h} = tf;
+    ctx.save();
+
+    // Optional light grid (disabled unless showGrid=true)
+    if(showGrid){
+      ctx.strokeStyle=colorGrid; ctx.lineWidth=1; ctx.beginPath();
+      for(let i=0;i<=xTicks;i++){ const x=pad+i*(w-2*pad)/xTicks; ctx.moveTo(x,pad); ctx.lineTo(x,h-pad); }
+      for(let j=0;j<=yTicks;j++){ const y=pad+j*(h-2*pad)/yTicks; ctx.moveTo(pad,y); ctx.lineTo(w-pad,y); }
+      ctx.stroke();
+    }
+
+    // Axis frame (box)
+    ctx.strokeStyle=colorAxis; ctx.lineWidth=1.4; ctx.beginPath(); ctx.rect(pad,pad,w-2*pad,h-2*pad); ctx.stroke();
+
+    // Axis labels
+    ctx.fillStyle=colorAxis;
+    ctx.font='12px system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Arial';
+    ctx.textAlign='center';
+    ctx.fillText(xLabel, w/2, h - pad + 26);     // X label just below axis
+    ctx.save();
+    ctx.translate(pad - 26, h/2);                // Y label to the left, rotated
+    ctx.rotate(-Math.PI/2);
+    ctx.textAlign='center';
+    ctx.fillText(yLabel, 0, 0);
+    ctx.restore();
+
+    ctx.restore();
+  }
+
+  // Model & integrator
+  function fhn(v,w,P){ const dv=v-(v*v*v)/3 - w + P.I; const dw=(v+P.a - P.b*w)/P.tau; return [dv,dw]; }
+  function rk4(v,w,dt,P){
+    const k1=fhn(v,w,P);
+    const k2=fhn(v+0.5*dt*k1[0], w+0.5*dt*k1[1], P);
+    const k3=fhn(v+0.5*dt*k2[0], w+0.5*dt*k2[1], P);
+    const k4=fhn(v+dt*k3[0],   w+dt*k3[1],   P);
+    return [ v+(dt/6)*(k1[0]+2*k2[0]+2*k3[0]+k4[0]),
+             w+(dt/6)*(k1[1]+2*k2[1]+2*k3[1]+k4[1]) ];
+  }
+
+  function simulate(P){
+    const rng=makeRNG(P.seed|0);
+    const V=Array.from({length:P.steps},()=>new Float64Array(P.N));
+    const W=Array.from({length:P.steps},()=>new Float64Array(P.N));
+    for(let i=0;i<P.N;i++){ V[0][i]=randUniform(rng,P.vmin,P.vmax); W[0][i]=randUniform(rng,P.wmin,P.wmax); }
+    for(let t=1;t<P.steps;t++){
+      const pv=V[t-1], pw=W[t-1], cv=V[t], cw=W[t];
+      for(let i=0;i<P.N;i++){ const r=rk4(pv[i],pw[i],P.dt,P); cv[i]=r[0]; cw[i]=r[1]; }
+    }
+    const tAxis=new Float64Array(P.steps); for(let t=0;t<P.steps;t++) tAxis[t]=t*P.dt;
+    let yMin=+Infinity,yMax=-Infinity;
+    for(let t=0;t<P.steps;t++){ for(let i=0;i<P.N;i++){ const a=V[t][i],b=W[t][i]; if(a<yMin)yMin=a; if(b<yMin)yMin=b; if(a>yMax)yMax=a; if(b>yMax)yMax=b; } }
+    if(!Number.isFinite(yMin)||!Number.isFinite(yMax)||yMin===yMax){ yMin=-2; yMax=2; }
+    const pad=0.05*(yMax-yMin||1); yMin-=pad; yMax+=pad;
+    return {V,W,tAxis,yMin,yMax};
+  }
+
+  const phaseCanvas=$('phase'), timeCanvas=$('time');
+  const pctx=phaseCanvas.getContext('2d'), tctx=timeCanvas.getContext('2d');
+
+  function resizeCanvases(){
+    const dpr=Math.max(1, Math.min(2, window.devicePixelRatio||1));
+    for(const c of [phaseCanvas,timeCanvas]){
+      const rect=c.getBoundingClientRect();
+      c.width=Math.round(rect.width*dpr);
+      c.height=Math.round(rect.height*dpr);
+      const ctx=c.getContext('2d');
+      ctx.setTransform(dpr,0,0,dpr,0,0); // draw in CSS pixels
+    }
+  }
+  function cssSize(c){ const r=c.getBoundingClientRect(); return {w:r.width, h:r.height}; }
+
+  function drawPhaseStatic(P, tf){
+    const ctx=pctx; ctx.clearRect(0,0,tf.width,tf.height);
+    // Axes with labels, grid OFF
+    drawAxes(ctx, tf, {xTicks:6,yTicks:6, xLabel:'v', yLabel:'w', showGrid:false});
+
+    // Vector field
+    const nx=24, ny=24; ctx.save(); ctx.strokeStyle='#6f7fb6'; ctx.globalAlpha=.26;
+    for(let i=0;i<=nx;i++){
+      const v=P.vmin+i*(P.vmax-P.vmin)/nx;
+      for(let j=0;j<=ny;j++){
+        const w=P.wmin+j*(P.wmax-P.wmin)/ny;
+        let [dv,dw]=fhn(v,w,P); const sp=Math.hypot(dv,dw)||1e-6; dv/=sp; dw/=sp;
+        const x=tf.toX(v), y=tf.toY(w), scale=16, x2=x+dv*scale, y2=y-dw*scale;
+        ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x2,y2); ctx.stroke();
+        const ah=4, ang=Math.atan2(y-y2, x2-x);
+        ctx.beginPath(); ctx.moveTo(x2,y2);
+        ctx.lineTo(x2-ah*Math.cos(ang-0.5), y2-ah*Math.sin(ang-0.5));
+        ctx.lineTo(x2-ah*Math.cos(ang+0.5), y2-ah*Math.sin(ang+0.5));
+        ctx.closePath(); ctx.fillStyle='#6f7fb6'; ctx.fill();
+      }
+    }
+    ctx.restore();
+
+    // Nullclines
+    const samples=600, dvPath=[], dwPath=[];
+    for(let i=0;i<=samples;i++){
+      const v=P.vmin+i*(P.vmax-P.vmin)/samples;
+      const w_dv0=v-(v*v*v)/3+P.I, w_dw0=(v+P.a)/P.b;
+      dvPath.push([tf.toX(v), tf.toY(w_dv0)]);
+      dwPath.push([tf.toX(v), tf.toY(w_dw0)]);
+    }
+    ctx.save(); ctx.strokeStyle='#e7ecff'; ctx.lineWidth=1.6; ctx.beginPath();
+    for(let i=0;i<dvPath.length;i++){ const [x,y]=dvPath[i]; if(i===0)ctx.moveTo(x,y); else ctx.lineTo(x,y); } ctx.stroke(); ctx.restore();
+    ctx.save(); ctx.strokeStyle='#e7ecff'; ctx.setLineDash([8,7]); ctx.lineWidth=1.6; ctx.beginPath();
+    for(let i=0;i<dwPath.length;i++){ const [x,y]=dwPath[i]; if(i===0)ctx.moveTo(x,y); else ctx.lineTo(x,y); } ctx.stroke(); ctx.setLineDash([]); ctx.restore();
+  }
+
+  function drawPhaseDynamic(P, tf, colors, data, frame){
+    drawPhaseStatic(P, tf);
+    const ctx=pctx;
+    for(let i=0;i<P.N;i++){
+      const color=colors[i], t0=Math.max(0, frame-P.trail), L=frame-t0;
+      if(L>=1){
+        for(let k=t0;k<frame;k++){
+          const j=k-t0, frac=L>1? j/(L-1) : 1, alpha=0.15+0.8*Math.pow(frac,1.5), lw=0.4+1.0*Math.pow(frac,1.5);
+          const x1=tf.toX(data.V[k][i]), y1=tf.toY(data.W[k][i]), x2=tf.toX(data.V[k+1][i]), y2=tf.toY(data.W[k+1][i]);
+          ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2);
+          ctx.lineWidth=lw; ctx.strokeStyle=color; ctx.globalAlpha=alpha; ctx.stroke();
+        }
+        ctx.globalAlpha=1;
+      }
+      const xh=tf.toX(data.V[frame][i]), yh=tf.toY(data.W[frame][i]);
+      ctx.beginPath(); ctx.arc(xh,yh,3.2,0,Math.PI*2); ctx.fillStyle=color; ctx.fill();
+      ctx.lineWidth=1; ctx.strokeStyle='#0a0f20'; ctx.stroke();
+    }
+    const t=data.tAxis[frame].toFixed(2);
+    ctx.save(); ctx.fillStyle='rgba(231,236,255,.8)'; ctx.font='600 12px system-ui,-apple-system,Segoe UI,Roboto';
+    ctx.fillText(`t = ${t} s`, tf.pad+8, tf.pad+16); ctx.restore();
+  }
+
+  function drawTime(P, tf, colors, data, frame){
+    const ctx=tctx; ctx.clearRect(0,0,tf.width, tf.height);
+    // Axes with labels, grid OFF
+    drawAxes(ctx, tf, {xTicks:6,yTicks:6, xLabel:'Time (s)', yLabel:'v, w', showGrid:false});
+
+    for(let i=0;i<P.N;i++){
+      const color=colors[i];
+      // v(t)
+      ctx.save(); ctx.beginPath(); ctx.strokeStyle=color; ctx.lineWidth=1.6; ctx.globalAlpha=.95;
+      for(let k=0;k<=frame;k++){ const x=tf.toX(data.tAxis[k]), y=tf.toY(data.V[k][i]); if(k===0)ctx.moveTo(x,y); else ctx.lineTo(x,y); }
+      ctx.stroke(); ctx.restore();
+
+      // w(t) dashed
+      ctx.save(); ctx.beginPath(); ctx.strokeStyle=color; ctx.setLineDash([8,7]); ctx.lineWidth=1.6; ctx.globalAlpha=.6;
+      for(let k=0;k<=frame;k++){ const x=tf.toX(data.tAxis[k]), y=tf.toY(data.W[k][i]); if(k===0)ctx.moveTo(x,y); else ctx.lineTo(x,y); }
+      ctx.stroke(); ctx.setLineDash([]); ctx.restore();
+    }
+
+    // Cursor line
+    const xcur=tf.toX(data.tAxis[frame]); ctx.save(); ctx.strokeStyle='#7e8cc2'; ctx.globalAlpha=.35; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(xcur, tf.pad); ctx.lineTo(xcur, tf.height - tf.pad); ctx.stroke(); ctx.restore();
+  }
+
+  // App logic
+  let state={running:false, paused:false, frame:0, timer:null, P:{...DEFAULTS}, data:null, colors:null, tfPhase:null, tfTime:null};
+
+  function getParams(){
+    const P={
+      N: clamp(parseInt($('N').value||1),1,2000),
+      I: parseFloat($('I').value||DEFAULTS.I),
+      a: parseFloat($('a').value||DEFAULTS.a),
+      b: parseFloat($('b').value||DEFAULTS.b),
+      tau: Math.max(1e-6, parseFloat($('tau').value||DEFAULTS.tau)),
+      dt: Math.max(1e-6, parseFloat($('dt').value||DEFAULTS.dt)),
+      steps: clamp(parseInt($('steps').value||DEFAULTS.steps),10,20000),
+      fps: clamp(parseInt($('fps').value||DEFAULTS.fps),1,60),
+      trail: clamp(parseInt($('trail').value||DEFAULTS.trail),2,2000),
+      seed: parseInt($('seed').value||DEFAULTS.seed),
+      vmin: DEFAULTS.vmin, vmax: DEFAULTS.vmax, wmin: DEFAULTS.wmin, wmax: DEFAULTS.wmax
+    };
+    return P;
+  }
+
+  function start(){
+    stop();
+    state.P=getParams();
+    resizeCanvases();
+
+    const ps=cssSize(phaseCanvas), ts=cssSize(timeCanvas);
+    state.tfPhase=makeTransform(state.P.vmin,state.P.vmax,state.P.wmin,state.P.wmax, ps.w, ps.h);
+    state.data=simulate(state.P);
+    state.tfTime=makeTransform(0, state.data.tAxis[state.P.steps-1], state.data.yMin,state.data.yMax, ts.w, ts.h);
+    state.colors=makeColors(state.P.N);
+    state.frame=0; state.paused=false; state.running=true;
+
+    drawPhaseStatic(state.P, state.tfPhase);
+    drawPhaseDynamic(state.P, state.tfPhase, state.colors, state.data, state.frame);
+    drawTime(state.P, state.tfTime, state.colors, state.data, state.frame);
+
+    const interval=Math.max(10, Math.round(1000/state.P.fps));
+    state.timer=setInterval(()=>{
+      if(state.paused) return;
+      state.frame++;
+      if(state.frame>=state.P.steps){ stop(); return; }
+      drawPhaseDynamic(state.P, state.tfPhase, state.colors, state.data, state.frame);
+      drawTime(state.P, state.tfTime, state.colors, state.data, state.frame);
+    }, interval);
+    $('pauseBtn').textContent='Pause';
+  }
+
+  function stop(){ if(state.timer){ clearInterval(state.timer); state.timer=null; } state.running=false; state.paused=false; }
+  function reset(){ for(const [k,v] of Object.entries(DEFAULTS)){ if($(k)) $(k).value=v; } start(); }
+
+  $('runBtn').addEventListener('click', start);
+  $('resetBtn').addEventListener('click', reset);
+  $('pauseBtn').addEventListener('click', ()=>{
+    if(!state.running){ start(); return; }
+    state.paused=!state.paused;
+    $('pauseBtn').textContent = state.paused ? 'Resume' : 'Pause';
+  });
+
+  window.addEventListener('resize', ()=>{
+    if(!state.data) return;
+    resizeCanvases();
+    const ps=cssSize(phaseCanvas), ts=cssSize(timeCanvas);
+    state.tfPhase=makeTransform(state.P.vmin,state.P.vmax,state.P.wmin,state.P.wmax, ps.w, ps.h);
+    state.tfTime =makeTransform(0, state.data.tAxis[state.P.steps-1], state.data.yMin,state.data.yMax, ts.w, ts.h);
+    drawPhaseDynamic(state.P, state.tfPhase, state.colors, state.data, state.frame);
+    drawTime(state.P, state.tfTime, state.colors, state.data, state.frame);
+  });
+
+  // boot
+  document.getElementById('runBtn').textContent = 'Play';
+  reset();
+  </script>
+</body>
+</html>
