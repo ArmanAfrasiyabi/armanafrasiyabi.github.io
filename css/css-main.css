@@ -103,7 +103,8 @@ footer.sticky-bottom { border-top: 1px solid #e8e8e8; padding-top: 40px; padding
 
 .distill a:hover { border-bottom-color: var(--global-theme-color); text-decoration: none; }
 
-.projects .award { background-color: #efcc00; font-weight: 500; }
+.projects .award { background-color: #000000; font-weight: 500; }
+.projects .conference { background-color: #00809D; font-weight: 500; }
 .projects .grid-item { width: 100%; margin-bottom: 10px; }
 .projects .grid-item a { color: black; text-decoration: none; }
 .projects .grid-item a:hover { color: var(--global-theme-color); }
@@ -120,7 +121,8 @@ footer.sticky-bottom { border-top: 1px solid #e8e8e8; padding-top: 40px; padding
 .publications ol.bibliography li .abbr abbr { display: inline-block; background-color: var(--global-theme-color); padding-left: 1rem; padding-right: 1rem; }
 .publications ol.bibliography li .abbr abbr a { color: white; }
 .publications ol.bibliography li .abbr abbr a:hover { text-decoration: none; }
-.publications ol.bibliography li .abbr .award { background-color: #efcc00; }
+.publications ol.bibliography li .abbr .award { background-color: #000000; }
+.publications ol.bibliography li .abbr .conference { background-color: #00809D; }
 .publications ol.bibliography li .title { font-weight: 500; }
 .publications ol.bibliography li .author > em { font-style: normal; font-weight: 400; }
 .publications ol.bibliography li .links a.btn { color: var(--global-text-color); border: 1px solid var(--global-text-color); padding-left: 1rem; padding-right: 1rem; padding-top: 0.25rem; padding-bottom: 0.25rem; }
