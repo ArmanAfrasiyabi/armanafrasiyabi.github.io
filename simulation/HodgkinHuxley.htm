@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Hodgkin–Huxley — V(t) + Phase Planes</title>
+<style>
+  :root{
+    --bg:#071637; --bg-2:#0a1f4d; --bg-3:#0f2a66;
+    --ink:#eaf2ff; --ink-dim:#c9d7ff; --line:#1b347a;
+    --accent:#8ecbff; --green:#25d07d; --red:#ff6a6a;
+    --arrow:#b8c6ff; --trace:#ffd36e; --stim:#b3c2ff;
+    --phase-h: 240px;
+  }
+
+  
+  html,body{height:100%;margin:0;background:var(--bg);color:var(--ink);
+    font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial,'Noto Sans',sans-serif}
+
+  .half-line { display:block; height:.5em; }
+  .page{width:60%; min-width:980px; max-width:1400px; margin:0 auto; padding:18px 0;}
+
+  .layout{display:grid; grid-template-columns: 320px 1fr; gap:16px; margin-top:14px}
+  .panel{background:var(--bg-2); border:1px solid var(--line); border-radius:14px; padding:12px; color:var(--ink)}
+  h1{font-size:16px;margin:0 0 8px 0}
+  .small{font-size:12px;color:var(--ink-dim)}
+
+  .controls{display:grid; grid-template-columns:1fr; gap:10px}
+  .group{border:1px solid var(--line); border-radius:12px; padding:10px}
+  .group h2{font-size:12px; margin:0 0 6px 0; color:var(--ink-dim); font-weight:600; letter-spacing:.3px}
+  label{display:flex; justify-content:space-between; align-items:center; gap:10px; margin:6px 0; font-size:12px}
+  input[type="number"]{
+    width:110px; padding:6px 8px; border-radius:10px; border:1px solid var(--line);
+    background:#0a1f4d; color:var(--ink); outline:none;
+  }
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button{opacity:1}
+  .btnrow{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+  button{
+    background:#183b84; color:#fff; border:1px solid var(--line);
+    border-radius:10px; padding:8px 10px; font-size:13px; cursor:pointer
+  }
+  button.secondary{background:#0c255d}
+  button:disabled{opacity:.55; cursor:not-allowed}
+
+  .vwrap{height: 44vh; min-height:260px; display:flex; flex-direction:column; gap:8px}
+  .legend{display:flex; gap:14px; align-items:center; flex-wrap:wrap}
+  .chip{display:inline-flex; align-items:center; gap:6px; font-size:12px; color:var(--ink-dim)}
+  .dot{width:10px; height:10px; border-radius:50%}
+  .c-green{background:var(--green)} .c-red{background:var(--red)} .c-arrow{background:var(--arrow)} .c-dot{background:var(--trace)}
+  .c-cyan{background:var(--accent)} .c-stim{background:var(--stim)}
+
+  canvas{width:100%; height:100%; display:block; background:#0a1f4d; border:1px solid var(--line); border-radius:12px}
+
+  .phasegrid{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+  .phasecell{height:var(--phase-h)}
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="layout">
+      
+      <!-- LEFT PANEL -->
+       
+      <div class="panel">
+        <h1>Hodgkin–Huxley Simulation</h1>
+        <span class="half-line" aria-hidden="true"></span>
+        <div class="controls">
+          <div class="group">
+            <div class="btnrow">
+              <button id="btnRun">Run</button>
+              <button id="btnPause" class="secondary" disabled>Pause</button>
+              <button id="btnReset" class="secondary">Reset</button>
+            </div>
+          </div>
+           
+          <span class="half-line" aria-hidden="true"></span>
+          <div class="group">
+            <h2>Stimulus I<sub>ext</sub></h2>
+            <label><span>Amp (µA/cm²)</span><input id="Iamp" type="number" value="10" step="1" min="-200" max="300"></label>
+            <label><span>Start (ms)</span><input id="Istart" type="number" value="10" step="0.1" min="0" max="5000"></label>
+            <label><span>Dur (ms)</span><input id="Idur" type="number" value="1" step="0.1" min="0" max="5000"></label>
+            <div class="small">Step pulse: on in [start, start+dur).</div>
+          </div>
+           
+          <span class="half-line" aria-hidden="true"></span>
+          <div class="group">
+            <h2>Simulation</h2>
+            <label><span>Total T (ms)</span><input id="Tmax" type="number" value="50" step="1" min="1" max="50000"></label>
+            <label><span>Δt (ms)</span><input id="dt" type="number" value="0.010" step="0.005" min="0.005" max="1"></label>
+            <label><span>V<sub>0</sub> (mV)</span><input id="V0" type="number" value="-65" step="0.1" min="-120" max="60"></label>
+            <label><span>V* for m–h (mV)</span><input id="Vstar" type="number" value="-65" step="0.5" min="-120" max="60"></label>
+          </div>
+           
+          <span class="half-line" aria-hidden="true"></span>
+          <div class="group">
+            <h2>Conductances (mS/cm²) & Capacitance</h2>
+            <label><span>g<sub>Na</sub></span><input id="gNa" type="number" value="120" step="1" min="0" max="500"></label>
+            <label><span>g<sub>K</sub></span><input id="gK"  type="number" value="36" step="0.5" min="0" max="500"></label>
+            <label><span>g<sub>L</sub></span><input id="gL"  type="number" value="0.3" step="0.05" min="0" max="50"></label>
+            <label><span>C<sub>m</sub> (µF/cm²)</span><input id="Cm"  type="number" value="1" step="0.1" min="0.1" max="10"></label>
+          </div>
+          
+          <span class="half-line" aria-hidden="true"></span>
+          <div class="group">
+            <h2>Reversal (mV)</h2>
+            <label><span>E<sub>Na</sub></span><input id="ENa" type="number" value="50" step="0.5" min="-20" max="80"></label>
+            <label><span>E<sub>K</sub></span><input id="EK"  type="number" value="-77" step="0.5" min="-120" max="-20"></label>
+            <label><span>E<sub>L</sub></span><input id="EL"  type="number" value="-54.387" step="0.1" min="-100" max="0"></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT PANEL (title here) -->
+      <div class="panel" style="display:flex; flex-direction:column; gap:12px;">
+        <h1>Membrane Potential & Phase Planes</h1>
+
+        <div class="vwrap">
+          <div class="legend">
+            <span class="chip"><span class="dot c-cyan"></span>V (mV)</span>
+            <span class="chip"><span class="dot c-stim"></span>I<sub>ext</sub> (scaled)</span>
+            <span class="chip"><span class="dot c-dot"></span>moving marker</span>
+          </div>
+          <canvas id="cvV"></canvas>
+        </div>
+
+        <div class="legend">
+          <span class="chip"><span class="dot c-arrow"></span>vector field</span>
+          <span class="chip"><span class="dot c-green"></span>nullcline: g<sub>∞</sub>(⋅)</span>
+          <span class="chip"><span class="dot c-red"></span>nullcline: dV/dt=0</span>
+          <span class="chip"><span class="dot c-dot"></span>moving marker + fading trail</span>
+        </div>
+
+        <div class="phasegrid">
+          <div class="phasecell"><canvas id="cvPn"  title="V–n"></canvas></div>
+          <div class="phasecell"><canvas id="cvPm"  title="V–m"></canvas></div>
+          <div class="phasecell"><canvas id="cvPh"  title="V–h"></canvas></div>
+          <div class="phasecell"><canvas id="cvPmh" title="m–h (at V*)"></canvas></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+(function(){
+  const $ = (id)=>document.getElementById(id);
+  const cvV=$('cvV'), cvPn=$('cvPn'), cvPm=$('cvPm'), cvPh=$('cvPh'), cvPmh=$('cvPmh');
+
+  /* ---------- HH rates & helpers ---------- */
+  function vtrap(x, k){ if (Math.abs(x/k)<1e-6) return k*(1 - x/(2*k)); return x/(1 - Math.exp(-x/k)); }
+  function alpha_m(V){ return 0.1 * vtrap(V + 40, 10); }
+  function beta_m (V){ return 4.0 * Math.exp(-(V + 65)/18); }
+  function alpha_h(V){ return 0.07 * Math.exp(-(V + 65)/20); }
+  function beta_h (V){ return 1.0 / (1 + Math.exp(-(V + 35)/10)); }
+  function alpha_n(V){ return 0.01 * vtrap(V + 55, 10); }
+  function beta_n (V){ return 0.125 * Math.exp(-(V + 65)/80); }
+  const m_inf=(V)=>{const am=alpha_m(V), bm=beta_m(V); return am/(am+bm);};
+  const h_inf=(V)=>{const ah=alpha_h(V), bh=beta_h(V); return ah/(ah+bh);};
+  const n_inf=(V)=>{const an=alpha_n(V), bn=beta_n(V); return an/(an+bn);};
+
+  /* ---------- State ---------- */
+  let t=[], V=[], m=[], h=[], n=[], I=[];
+  let idx=0, anim=null, running=false, paused=false;
+
+  /* Speed control */
+  const SPEED = 0.3;        // 50% of previous speed
+  let advanceAcc = 0;       // accumulator for fractional advancement
+
+  /* ---------- Params ---------- */
+  function P(){
+    return {
+      Iamp: parseFloat($('Iamp').value), Istart: parseFloat($('Istart').value), Idur: parseFloat($('Idur').value),
+      Tmax: parseFloat($('Tmax').value), dt: parseFloat($('dt').value), V0: parseFloat($('V0').value),
+      Vstar: parseFloat($('Vstar').value),
+      gNa: parseFloat($('gNa').value), gK: parseFloat($('gK').value), gL: parseFloat($('gL').value),
+      ENa: parseFloat($('ENa').value), EK: parseFloat($('EK').value), EL: parseFloat($('EL').value),
+      Cm: parseFloat($('Cm').value),
+    };
+  }
+  const Iext=(p,tt)=> (tt>=p.Istart && tt<(p.Istart+p.Idur)) ? p.Iamp : 0;
+
+  function deriv(p, state, tt){
+    const [V, m, h, n] = state;
+    const INa = p.gNa*Math.pow(m,3)*h*(V - p.ENa);
+    const IK  = p.gK *Math.pow(n,4)*(V - p.EK);
+    const IL  = p.gL *(V - p.EL);
+    const Iex = Iext(p, tt);
+    const dV  = (Iex - INa - IK - IL)/p.Cm;
+    const dm = alpha_m(V)*(1-m) - beta_m(V)*m;
+    const dh = alpha_h(V)*(1-h) - beta_h(V)*h;
+    const dn = alpha_n(V)*(1-n) - beta_n(V)*n;
+    return [dV, dm, dh, dn, Iex];
+  }
+
+  function rk4(p, state, tt, dt){
+    const k1 = deriv(p, state, tt);
+    const s2 = state.map((s,i)=>s + 0.5*dt*k1[i]);
+    const k2 = deriv(p, s2, tt + 0.5*dt);
+    const s3 = state.map((s,i)=>s + 0.5*dt*k2[i]);
+    const k3 = deriv(p, s3, tt + 0.5*dt);
+    const s4 = state.map((s,i)=>s + dt*k3[i]);
+    const k4 = deriv(p, s4, tt + dt);
+    const next = state.map((s,i)=> s + dt*(k1[i]+2*k2[i]+2*k3[i]+k4[i])/6);
+    const Iavg = (k1[4] + 2*k2[4] + 2*k3[4] + k4[4])/6;
+    return [next, Iavg];
+  }
+
+  function simulate(){
+    const p = P();
+    const N = Math.floor(p.Tmax/p.dt)+1;
+    t = new Array(N); V = new Array(N); m = new Array(N); h = new Array(N); n = new Array(N); I = new Array(N);
+
+    t[0]=0; V[0]=p.V0; m[0]=m_inf(V[0]); h[0]=h_inf(V[0]); n[0]=n_inf(V[0]); I[0]=Iext(p,0);
+
+    let state=[V[0],m[0],h[0],n[0]];
+    for(let k=1;k<N;k++){
+      const tt = k*p.dt;
+      const [next, Iavg] = rk4(p, state, tt-p.dt, p.dt);
+      state = next;
+      t[k]=tt; V[k]=state[0]; m[k]=state[1]; h[k]=state[2]; n[k]=state[3]; I[k]=Iavg;
+    }
+  }
+
+  /* ---------- Nullclines ---------- */
+  const NC = { Vn:{x1:[],y1:[], x2:[],y2:[]}, Vm:{x1:[],y1:[], x2:[],y2:[]}, Vh:{x1:[],y1:[], x2:[],y2:[]},
+               mh:{mx:[0,1], my:[0,0], hx:[0,0], hy:[1,1], locusX:[], locusY:[]} };
+
+  function computeNullclines(){
+    const p = P();
+    const Vmin=-90, Vmax=50, Np=600;
+
+    function dVnull_n(V){
+      const mss=m_inf(V), hss=h_inf(V);
+      const num = - p.gNa*Math.pow(mss,3)*hss*(V - p.ENa) - p.gL*(V - p.EL);
+      const den = p.gK*(V - p.EK);
+      if (Math.abs(den)<1e-12) return null;
+      const rhs = num/den; if (rhs<0 || !isFinite(rhs)) return null;
+      return Math.min(1, Math.max(0, Math.pow(rhs,0.25)));
+    }
+    function dVnull_m(V){
+      const nss=n_inf(V), hss=h_inf(V);
+      const den = p.gNa*hss*(V - p.ENa);
+      if (Math.abs(den)<1e-12) return null;
+      const rhs = ( - p.gK*Math.pow(nss,4)*(V - p.EK) - p.gL*(V - p.EL) ) / den;
+      if (rhs<0 || !isFinite(rhs)) return null;
+      return Math.min(1, Math.max(0, Math.pow(rhs,1/3)));
+    }
+    function dVnull_h(V){
+      const nss=n_inf(V), mss=m_inf(V);
+      const den = p.gNa*Math.pow(mss,3)*(V - p.ENa);
+      if (Math.abs(den)<1e-12) return null;
+      const rhs = ( - p.gK*Math.pow(nss,4)*(V - p.EK) - p.gL*(V - p.EL) ) / den;
+      if (!isFinite(rhs)) return null;
+      const hcl = Math.max(0, Math.min(1, rhs));
+      if (hcl<0 || hcl>1) return null;
+      return hcl;
+    }
+
+    ['Vn','Vm','Vh'].forEach(k=>{NC[k].x1=[];NC[k].y1=[];NC[k].x2=[];NC[k].y2=[];});
+
+    for(let i=0;i<=Np;i++){
+      const VV = Vmin + (Vmax - Vmin)*i/Np;
+
+      NC.Vn.x1.push(VV); NC.Vn.y1.push(n_inf(VV));
+      const ncl = dVnull_n(VV); if (ncl!==null){NC.Vn.x2.push(VV); NC.Vn.y2.push(ncl);}
+
+      NC.Vm.x1.push(VV); NC.Vm.y1.push(m_inf(VV));
+      const mcl = dVnull_m(VV); if (mcl!==null){NC.Vm.x2.push(VV); NC.Vm.y2.push(mcl);}
+
+      NC.Vh.x1.push(VV); NC.Vh.y1.push(h_inf(VV));
+      const hcl = dVnull_h(VV); if (hcl!==null){NC.Vh.x2.push(VV); NC.Vh.y2.push(hcl);}
+    }
+
+    const Vstar = p.Vstar;
+    const mss = m_inf(Vstar), hss = h_inf(Vstar);
+    NC.mh.mx=[mss,mss]; NC.mh.my=[0,1];
+    NC.mh.hx=[0,1];     NC.mh.hy=[hss,hss];
+    NC.mh.locusX=[]; NC.mh.locusY=[];
+    const Nloc=200, Vmin2=-90, Vmax2=50;
+    for(let i=0;i<=Nloc;i++){
+      const VV = Vmin2 + (Vmax2 - Vmin2)*i/Nloc;
+      NC.mh.locusX.push(m_inf(VV));
+      NC.mh.locusY.push(h_inf(VV));
+    }
+  }
+
+  /* ---------- Vector fields ---------- */
+  const VF = { Vn:[], Vm:[], Vh:[], mh:[] };
+  function computeVectorFields(){
+    const p = P();
+    function dV_given(V, m, h, n){
+      const INa = p.gNa*Math.pow(m,3)*h*(V - p.ENa);
+      const IK  = p.gK *Math.pow(n,4)*(V - p.EK);
+      const IL  = p.gL *(V - p.EL);
+      return (0 - INa - IK - IL)/p.Cm;
+    }
+    function dm_given(V, m){ return alpha_m(V)*(1-m) - beta_m(V)*m; }
+    function dh_given(V, h){ return alpha_h(V)*(1-h) - beta_h(V)*h; }
+    function dn_given(V, n){ return alpha_n(V)*(1-n) - beta_n(V)*n; }
+
+    VF.Vn=[]; VF.Vm=[]; VF.Vh=[]; VF.mh=[];
+    const Vmin=-90, Vmax=50, Gmin=0, Gmax=1;
+    const nV=20, nG=12;
+
+    for(let i=0;i<=nV;i++){
+      const VV = Vmin + (Vmax - Vmin)*i/nV;
+      const mss=m_inf(VV), hss=h_inf(VV), nss=n_inf(VV);
+      for(let j=0;j<=nG;j++){
+        const gg = Gmin + (Gmax - Gmin)*j/nG;
+        let dV = dV_given(VV, mss, hss, gg);
+        let dg = dn_given(VV, gg);
+        VF.Vn.push({x:VV, y:gg, ux:dV, uy:dg});
+
+        dV = dV_given(VV, gg, hss, nss);
+        dg = dm_given(VV, gg);
+        VF.Vm.push({x:VV, y:gg, ux:dV, uy:dg});
+
+        dV = dV_given(VV, mss, gg, nss);
+        dg = dh_given(VV, gg);
+        VF.Vh.push({x:VV, y:gg, ux:dV, uy:dg});
+      }
+    }
+
+    const Vstar = p.Vstar;
+    for(let i=0;i<=nG;i++){
+      const mm = Gmin + (Gmax - Gmin)*i/nG;
+      for(let j=0;j<=nG;j++){
+        const hh = Gmin + (Gmax - Gmin)*j/nG;
+        VF.mh.push({x:mm, y:hh, ux:dm_given(Vstar, mm), uy:dh_given(Vstar, hh)});
+      }
+    }
+  }
+
+  /* ---------- Canvas helpers ---------- */
+  function fitCanvas(c){
+    const rect = c.getBoundingClientRect();
+    const dpr = Math.max(1, Math.round(window.devicePixelRatio||1));
+    const w = Math.max(300, Math.floor(rect.width*dpr));
+    const h = Math.max(140, Math.floor(rect.height*dpr));
+    if (c.width!==w || c.height!==h){
+      c.width=w; c.height=h;
+      const ctx=c.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0);
+    }
+  }
+  function fitAll(){ [cvV,cvPn,cvPm,cvPh,cvPmh].forEach(fitCanvas); }
+  function varColor(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+
+  function niceTick(val){
+    const a=Math.abs(val);
+    if (a>=10) return Math.round(val).toString();
+    if (a>=1)  return val.toFixed(1);
+    return val.toFixed(2);
+  }
+
+  function drawAxes(ctx, w, h, cfg){
+    const {title, xRange, yRange, xLabel, yLabel, xTicks=10, yTicks=5, showXNums=false} = cfg;
+    const xmin=50, ymin=26, xmax=w-16, ymax=h-28;
+
+    ctx.clearRect(0,0,w,h);
+    ctx.fillStyle=varColor('--ink'); ctx.font='12px system-ui, sans-serif';
+    if (title) ctx.fillText(title, 10, 16);
+
+    // grid
+    ctx.strokeStyle=varColor('--line'); ctx.globalAlpha=0.55; ctx.lineWidth=1; ctx.beginPath();
+    for(let i=0;i<=xTicks;i++){ const x=xmin+(xmax-xmin)*i/xTicks; ctx.moveTo(x,ymin); ctx.lineTo(x,ymax); }
+    for(let j=0;j<=yTicks;j++){ const y=ymin+(ymax-ymin)*j/yTicks; ctx.moveTo(xmin,y); ctx.lineTo(xmax,y); }
+    ctx.stroke(); ctx.globalAlpha=1;
+
+    // axes
+    ctx.strokeStyle=varColor('--line'); ctx.beginPath();
+    ctx.moveTo(xmin,ymin); ctx.lineTo(xmin,ymax); ctx.moveTo(xmin,ymax); ctx.lineTo(xmax,ymax); ctx.stroke();
+
+    // x numbers off unless showXNums=true
+    if (showXNums){
+      ctx.fillStyle=varColor('--ink-dim');
+      ctx.textAlign='center';
+      for(let i=0;i<=xTicks;i++){
+        const xv = xRange[0] + (xRange[1]-xRange[0])*(i/xTicks);
+        const x = xmin + (xmax-xmin)*(i/xTicks);
+        ctx.fillText(niceTick(xv), x, ymax+14);
+      }
+    }
+    if (xLabel){ ctx.fillText(xLabel, (xmin+xmax)/2, ymax+28); }
+    if (yLabel){
+      ctx.save(); ctx.translate(14,(ymin+ymax)/2); ctx.rotate(-Math.PI/2);
+      ctx.textAlign='center'; ctx.fillText(yLabel, 0, 0); ctx.restore();
+    }
+
+    const xmap=(x)=> xmin + (x-xRange[0])/(xRange[1]-xRange[0])*(xmax-xmin);
+    const ymap=(y)=> ymin + (1 - (y-yRange[0])/(yRange[1]-yRange[0]))*(ymax-ymin);
+    return {xmap, ymap, xmin, ymin, xmax, ymax};
+  }
+
+  function strokeCurve(ctx, xs, ys, xmap, ymap, color, lw=2, dash=null, alpha=1){
+    if (!xs || xs.length===0) return;
+    ctx.save();
+    if (dash) ctx.setLineDash(dash);
+    ctx.globalAlpha=alpha;
+    ctx.strokeStyle=color; ctx.lineWidth=lw; ctx.beginPath();
+    ctx.moveTo(xmap(xs[0]), ymap(ys[0]));
+    for(let i=1;i<xs.length;i++) ctx.lineTo(xmap(xs[i]), ymap(ys[i]));
+    ctx.stroke();
+    ctx.globalAlpha=1; ctx.restore();
+  }
+  function drawArrow(ctx, x1,y1, x2,y2, color){
+    const dx=x2-x1, dy=y2-y1, L=Math.hypot(dx,dy)||1;
+    const ux=dx/L, uy=dy/L, head=5;
+    const backX=x2 - ux*head, backY=y2 - uy*head;
+    ctx.strokeStyle=color; ctx.lineWidth=1.25; ctx.beginPath();
+    ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x2,y2);
+    ctx.lineTo(backX - uy*3, backY + ux*3);
+    ctx.moveTo(x2,y2);
+    ctx.lineTo(backX + uy*3, backY - ux*3);
+    ctx.stroke();
+  }
+  function drawDot(ctx, x,y, color, r=3.2){
+    ctx.fillStyle=color; ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.fill();
+    ctx.strokeStyle = '#0a0f20';
+    ctx.lineWidth=1; ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.stroke();
+  }
+
+  /* ---------- FHN-style fading trail (thicker/opaque near head) ---------- */
+  function drawFitzTrail(ctx, xSeries, ySeries, xmap, ymap, endIndex, color, maxSeg=260){
+    if (endIndex < 1) return;
+    const startIndex = Math.max(1, endIndex - maxSeg);
+    const total = endIndex - startIndex;
+    if (total <= 0) return;
+
+    ctx.save();
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+
+    const step = Math.max(1, Math.floor(total / maxSeg));
+
+    for (let i = startIndex + step; i <= endIndex; i += step){
+      const i0 = i - step;
+      const frac = (i - startIndex) / (endIndex - startIndex);
+      const alpha = 0.15 + 0.80 * Math.pow(frac, 1.5);
+      const lw    = 0.8  + 1.60 * Math.pow(frac, 1.5);
+
+      ctx.globalAlpha = alpha;
+      ctx.strokeStyle = color;
+      ctx.lineWidth   = lw;
+
+      ctx.beginPath();
+      ctx.moveTo(xmap(xSeries[i0-1]), ymap(ySeries[i0-1]));
+      ctx.lineTo(xmap(xSeries[i0]),   ymap(ySeries[i0]));
+      ctx.stroke();
+    }
+
+    ctx.restore();
+  }
+
+  /* ---------- Drawing: V(t) ---------- */
+  function drawV(){
+    fitCanvas(cvV);
+    const ctx=cvV.getContext('2d');
+    const w=cvV.clientWidth, h=cvV.clientHeight;
+    const cfg = {title:'', xRange:[0, t[t.length-1]||1], yRange:[-90,50], xLabel:'t (ms)', yLabel:'V (mV)'}; // x numbers off
+    const {xmap, ymap, xmin, ymin} = drawAxes(ctx, w, h, cfg);
+
+    // V(t)
+    ctx.strokeStyle=varColor('--accent'); ctx.lineWidth=2; ctx.beginPath();
+    const upto=Math.min(idx, V.length-1);
+    if (V.length){
+      ctx.moveTo(xmap(0), ymap(V[0]));
+      for(let k=1;k<=upto;k++) ctx.lineTo(xmap(t[k]), ymap(V[k]));
+      ctx.stroke();
+      drawDot(ctx, xmap(t[upto]), ymap(V[upto]), varColor('--trace'));
+    }
+
+    // Stimulus (scaled)
+    const Iabs = I.length ? Math.max(1e-6, Math.max(...I.map(Math.abs))) : 1;
+    const bandTop=-10, bandBot=-50;
+    ctx.strokeStyle=varColor('--stim'); ctx.globalAlpha=.8; ctx.lineWidth=1.5; ctx.beginPath();
+    if (I.length){
+      const ymapI=(i)=> ymap(bandBot + (bandTop - bandBot)*(0.5 + 0.45*i/Iabs));
+      ctx.moveTo(xmap(0), ymapI(I[0]));
+      for(let k=1;k<=upto;k++) ctx.lineTo(xmap(t[k]), ymapI(I[k]));
+      ctx.stroke();
+    }
+    ctx.globalAlpha=1;
+
+    // HUD
+    cvV.onmousemove=(e)=>{
+      const rect=cvV.getBoundingClientRect();
+      const x=e.clientX-rect.left;
+      const frac=Math.min(1, Math.max(0, (x-50)/(w-66)));
+      const k=Math.round(frac*(t.length-1));
+      const txt=(t[k]!==undefined)? `t=${t[k].toFixed(2)} ms, V=${V[k].toFixed(2)} mV` : '';
+      ctx.clearRect(xmin+8, ymin+6, 240, 18);
+      ctx.fillStyle=varColor('--ink'); ctx.font='12px system-ui'; ctx.fillText(txt, xmin+12, ymin+18);
+    };
+  }
+
+  /* ---------- Drawing: Phase planes ---------- */
+  function drawPhase_Vg(canvas, gateArray, NCpair, VFpair, label){
+    fitCanvas(canvas);
+    const ctx = canvas.getContext('2d');
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    const Vmin=-90, Vmax=50;
+    const {xmap, ymap} = drawAxes(ctx, w, h, {title:'', xRange:[Vmin,Vmax], yRange:[0,1], xLabel:'V (mV)', yLabel:label});
+
+    // Vector field
+    ctx.globalAlpha = .75;
+    VFpair.forEach(v=>{
+      let ux=v.ux, uy=v.uy;
+      const s = Math.hypot(ux,uy) || 1; ux/=s; uy/=s;
+      const px = xmap(v.x), py = ymap(v.y);
+      const len = 10;
+      drawArrow(ctx, px - ux*len*0.5, py - uy*len*0.5, px + ux*len*0.5, py + uy*len*0.5, varColor('--arrow'));
+    });
+    ctx.globalAlpha = 1;
+
+    // Nullclines
+    strokeCurve(ctx, NCpair.x1, NCpair.y1, xmap, ymap, varColor('--green'), 2);
+    strokeCurve(ctx, NCpair.x2, NCpair.y2, xmap, ymap, varColor('--red'),   2);
+
+    // Trajectory + head
+    if (V.length){
+      const k = Math.min(idx, V.length-1);
+      drawFitzTrail(ctx, V, gateArray, xmap, ymap, k, varColor('--trace'), 260);
+      drawDot(ctx, xmap(V[k]), ymap(gateArray[k]), varColor('--trace'), 3.2);
+    }
+  }
+
+  function drawPhase_mh(canvas){
+    fitCanvas(canvas);
+    const ctx = canvas.getContext('2d');
+    const w = canvas.clientWidth, h = canvas.clientHeight;
+    const {xmap, ymap} = drawAxes(ctx, w, h, {title:'', xRange:[0,1], yRange:[0,1], xLabel:'m', yLabel:'h'});
+
+    // Vector field at V*
+    ctx.globalAlpha = .75;
+    VF.mh.forEach(v=>{
+      let ux=v.ux, uy=v.uy;
+      const s=Math.hypot(ux,uy)||1; ux/=s; uy/=s;
+      const px=xmap(v.x), py=ymap(v.y);
+      const len=10;
+      drawArrow(ctx, px - ux*len*0.5, py - uy*len*0.5, px + ux*len*0.5, py + uy*len*0.5, varColor('--arrow'));
+    });
+    ctx.globalAlpha = 1;
+
+    // Nullclines + locus
+    strokeCurve(ctx, NC.mh.mx, NC.mh.my, xmap, ymap, varColor('--green'), 2);
+    strokeCurve(ctx, NC.mh.hx, NC.mh.hy, xmap, ymap, varColor('--red'),   2);
+    strokeCurve(ctx, NC.mh.locusX, NC.mh.locusY, xmap, ymap, 'rgba(255,255,255,.35)', 1.5, [5,4]);
+
+    if (m.length){
+      const k=Math.min(idx, m.length-1);
+      drawFitzTrail(ctx, m, h, xmap, ymap, k, varColor('--trace'), 260);
+      drawDot(ctx, xmap(m[k]), ymap(h[k]), varColor('--trace'), 3.2);
+    }
+  }
+
+  function redrawAll(){
+    drawV();
+    drawPhase_Vg(cvPn, n, NC.Vn, VF.Vn, 'n');
+    drawPhase_Vg(cvPm, m, NC.Vm, VF.Vm, 'm');
+    drawPhase_Vg(cvPh, h, NC.Vh, VF.Vh, 'h');
+    drawPhase_mh(cvPmh);
+  }
+
+  /* ---------- Run / Pause / Reset ---------- */
+  function start(){
+    cancelAnimationFrame(anim);
+    running=true; paused=false; idx=0;
+    advanceAcc = 0; // reset speed accumulator
+    $('btnPause').disabled=false; $('btnPause').textContent='Pause';
+
+    setTimeout(()=>{
+      simulate();
+      computeNullclines();
+      computeVectorFields();
+      fitAll(); redrawAll();
+      anim = requestAnimationFrame(tick);
+    }, 0);
+  }
+  function tick(){
+    if (!running || paused) return;
+
+    const baseStride = Math.max(1, Math.floor(t.length/600));
+    advanceAcc += baseStride * SPEED;
+
+    let adv = Math.floor(advanceAcc);
+    if (adv < 1) { // not enough to advance this frame; redraw and reschedule
+      anim = requestAnimationFrame(tick);
+      return;
+    }
+    advanceAcc -= adv;
+
+    idx = Math.min(t.length-1, idx + adv);
+    redrawAll();
+
+    if (idx>=t.length-1){
+      running=false; $('btnPause').disabled=true; return;
+    }
+    anim = requestAnimationFrame(tick);
+  }
+  function pauseResume(){
+    if (!running && !paused) return;
+    if (!paused){ paused=true; $('btnPause').textContent='Resume'; cancelAnimationFrame(anim); }
+    else { paused=false; $('btnPause').textContent='Pause'; anim=requestAnimationFrame(tick); }
+  }
+  function resetSim(){
+    cancelAnimationFrame(anim); running=false; paused=false; idx=0;
+    advanceAcc = 0;
+    t=[];V=[];m=[];h=[];n=[];I=[];
+    $('btnPause').disabled=true;
+    fitAll(); redrawAll();
+  }
+
+  /* ---------- Wire up ---------- */
+  $('btnRun').addEventListener('click', start);
+  $('btnPause').addEventListener('click', pauseResume);
+  $('btnReset').addEventListener('click', resetSim);
+
+  ['Vstar','gNa','gK','gL','ENa','EK','EL'].forEach(id=>{
+    const el=$(id); if (!el) return;
+    el.addEventListener('input', ()=>{ computeNullclines(); computeVectorFields(); redrawAll(); });
+  });
+
+  window.addEventListener('resize', ()=>{ fitAll(); redrawAll(); });
+
+  // Autorun on load
+  start();
+
+})();
+</script>
+</body>
+</html>
