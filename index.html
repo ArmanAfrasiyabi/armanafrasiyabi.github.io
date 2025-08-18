@@ -153,7 +153,7 @@
       display: block;
     }
 
-    /* === The ONLY change you asked for (affects ONLY the three buttons) === */
+    /* === The ONLY change you asked for earlier (affects ONLY the three buttons) === */
     #btnSimulation, #btnHodgkin, #btnTeaching {
       /* 0.7x size */
       font-size: 0.7rem !important;
@@ -283,20 +283,7 @@
 	  </div> 
 
 	  &nbsp;  </font> <br /> 
-<!-- <header class="post-header">
-    <h1 class="post-title">
-        <div style="display:block;text-align:left">
-            <br />
-            <p class="smaller">
-                <font size="+3"> <span style="font-weight: 420; "> Arman</span> Afrasiyabi </font> <br />
-                <font size="+0">Ph.D., Research Scientist | </font> <font size="+1">
-                    <a href="https://twitter.com/ArmanAfrasiyabi" target="_blank" title="Twitter"><i class="fab fa-twitter pl-1 pr-1"></i></a>
-                    <a href="https://github.com/armanafrasiyabi" target="_blank" title="GitHub"><i class="fab fa-github pl-1 pr-1"></i></a>
-                    <a href="https://scholar.google.com/citations?hl=en&user=eLmbCr8AAAAJ&view_op=list_works&sortby=pubdate" target="_blank" title="Google Scholar"><i class="ai ai-google-scholar pl-1 pr-1"></i></a>
-                    <a href="https://www.linkedin.com/in/arman-afrasiyabi-40b48810b/" target="_blank" title="LinkedIn"><i class="fab fa-linkedin pl-1 pr-1"></i></a>
-                </font>
-    </h1>
-</header> -->
+
 <header class="post-header">
   <!-- Flex container: photo on the left, text on the right -->
   <div style="display:flex; align-items:center;">
@@ -370,12 +357,7 @@
         </div>
       </div>
 
-      <!-- Contact + Buttons -->
-      <div class="mt-3 mb-4">
-          <strong>Simulation</strong>: <button id="btnSimulation" class="btn btn-sim btn-half">FitzHugh–Nagumo </button>
-          <button id="btnHodgkin" class="btn btn-sim btn-half">Hodgkin–Huxley </button><br>
-          <strong>Teaching</strong>: <button id="btnTeaching" class="btn btn-sim btn-half" title="Open sample lecture (PDF)">Gradient Descent</button>
-      </div>
+      <!-- Contact (buttons moved to right column below) -->
       <p class="mt-4 mb-1">Contact:</p>
       <p style="margin-top:0.25rem;">
         <span style="display:inline-block; margin-left:2em;">arman.afrasiyabi@yale[dot]edu</span>
@@ -384,235 +366,260 @@
 
     <p style="margin: 0 0 100px 0;"></p>
 
+<!-- ======================= PUBLICATIONS + RIGHT COLUMN (65/35 split) ======================= -->
 <section id="publications" class="some-section">
-</b> </b>  
-<div class="publications"> 
-<h5> 
-	<strong>Publications & preprints</strong> 
-</h5>  
-<p style="margin: 0 0 20px 0;"></p>
-  <!-- Add content here -->
-</p>
-<ol class="bibliography">
-  <li>
-    <div class="row">
-      <div class="col-sm-2 abbr">
-        <abbr class="badge z-depth-1 conference">biorxiv</abbr>  
-      </div>
-      <div id="bengio2021proactivecontacttracing" class="col-sm-10">
-        <h2 class="title" style="font-size: 1rem;">CellSpliceNet: Interpretable Multimodal Modeling of Alternative Splicing Across Neurons</h2>
-        <div class="author" style="font-size: 0.9rem;">
-          </a> <strong>Arman Afrasiyabi</strong>, Jake Kovalic, Chen Liu, Egbert Castro, Alexis Weinreb, Erdem Varol, David Miller, Marc Hammarlund, Smita Krishnaswamy</a>
-        </div>
-        <!-- <div class="periodical" style="font-size: 0.9rem;">
-          <em>biorxiv.org, 2025</em>
-        </div> -->
-        <div class="links">
-          <a href="https://www.biorxiv.org/content/10.1101/2025.06.22.660966v1.full.pdf" class="btn btn-sm z-depth-0 light-blue-btn" role="button" target="_blank">paper</a>
-        </div>
+  <!-- Local styles for this section only -->
+  <style>
+    .pubs-news-wrap{
+      display:flex; align-items:flex-start; gap:24px; width:100%;
+    }
+    .pubs-col{flex:0 0 65%; max-width:65%;}
+    .news-col{flex:0 0 35%; max-width:35%; position:relative; top:12px; left:-8px;} /* a little down & left */
+    @media (max-width: 991.98px){
+      .pubs-news-wrap{flex-direction:column}
+      .pubs-col,.news-col{flex:0 0 100%; max-width:100%; left:0; top:0;}
+    }
+    .panel-card{
+      background:#f8f9fa; border:1px solid #e9ecef; border-radius:.5rem;
+      padding:1rem; box-shadow:0 6px 16px rgba(0,0,0,.06); margin-bottom:16px;
+    }
+    .panel-card h5{margin:0 0 .75rem 0}
+  </style>
+
+  <div class="pubs-news-wrap">
+    <!-- ===== LEFT: Publications (unchanged list) ===== -->
+    <div class="pubs-col">
+      </b> </b>  
+      <div class="publications"> 
+        <h5><strong>Publications & preprints</strong></h5>  
+        <p style="margin: 0 0 20px 0;"></p>
+
+        <ol class="bibliography">
+          <li>
+            <div class="row">
+              <div class="col-sm-2 abbr">
+                <abbr class="badge z-depth-1 conference">biorxiv</abbr>  
+              </div>
+              <div id="bengio2021proactivecontacttracing" class="col-sm-10">
+                <h2 class="title" style="font-size: 1rem;">CellSpliceNet: Interpretable Multimodal Modeling of Alternative Splicing Across Neurons</h2>
+                <div class="author" style="font-size: 0.9rem;">
+                  </a> <strong>Arman Afrasiyabi</strong>, Jake Kovalic, Chen Liu, Egbert Castro, Alexis Weinreb, Erdem Varol, David Miller, Marc Hammarlund, Smita Krishnaswamy</a>
+                </div>
+                <div class="links">
+                  <a href="https://www.biorxiv.org/content/10.1101/2025.06.22.660966v1.full.pdf" class="btn btn-sm z-depth-0 light-blue-btn" role="button" target="_blank">paper</a>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ol>
+
+        <ol class="bibliography">
+          <li>
+            <div class="row">
+              <div class="col-sm-2 abbr">
+                <abbr class="badge z-depth-1 conference">ICASSP</abbr>  
+              </div>
+              <div id="bengio2021proactivecontacttracing" class="col-sm-10">
+                <h2 class="title" style="font-size: 1rem;">Latent representation learning for multimodal brain activity translation</h2>
+                <div class="author" style="font-size: 0.9rem;">
+                  </a> <strong>Arman Afrasiyabi</strong>, Dhananjay Bhaskar, Erica L Busch, Laurent Caplette, Rahul Singh, Guillaume Lajoie, Nicholas B Turk-Browne, Smita Krishnaswamy</a>
+                </div>
+                <div class="periodical" style="font-size: 0.9rem;">
+                  <em>International Conference on Acoustics, Speech and Signal Processing, 2025</em>
+                </div>
+                <div class="links">
+                  <a href="https://arxiv.org/pdf/2409.18462" class="btn btn-sm z-depth-0 light-blue-btn" role="button" target="_blank">paper</a>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ol>
+
+        <ol class="bibliography"> 
+          <li>
+            <div class="row">
+              <div class="col-sm-2 abbr">
+                <abbr class="badge z-depth-1 conference">CCAM</abbr>  
+              </div>
+              <div id="bengio2021proactivecontacttracing" class="col-sm-10">
+                <h2 class="title" style="font-size: 1rem;">Looking through the mind's eye via multimodal encoder-decoder networks</h2>
+                <div class="author" style="font-size: 0.9rem;">
+                  </a> <strong>Arman Afrasiyabi</strong>,  Erica Busch, Rahul Singh, Dhananjay Bhaskar, Laurent Caplette, Nicholas Turk-Browne, Smita Krishnaswamy</a>
+                </div>
+                <div class="periodical" style="font-size: 0.9rem;">
+                  <em>Center for Collaborative Arts and Media Journal, 2024</em>
+                </div>
+                <div class="links">
+                  <a href="https://arxiv.org/pdf/2410.00047" class="btn btn-sm z-depth-0 light-blue-btn" role="button" target="_blank">paper</a>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ol>
+
+        <ol class="bibliography">
+          <li>
+            <div class="row">
+              <div class="col-sm-2 abbr">
+                <abbr class="badge z-depth-1 conference">ICCV</abbr>  
+              </div>
+              <div id="bengio2021proactivecontacttracing" class="col-sm-10">
+                <h2 class="title" style="font-size: 1rem;">DarSwin: distortion aware radial swin transformer</h2>
+                <div class="author" style="font-size: 0.9rem;">
+                  <a>Akshaya Athwale, </a> <strong>Arman Afrasiyabi</strong>, Justin Lague, Ichrak Shili, Ola Ahmad, <a href="http://vision.gel.ulaval.ca/~jflalonde/">Jean-François Lalonde</a>
+                </div>
+                <div class="periodical" style="font-size: 0.9rem;">
+                  <em>International Conference on Computer Vision, 2023</em>
+                </div>
+                <div class="pagelinks">
+                  <a href="https://lvsn.github.io/darswin/" class="btn btn-sm z-depth-0 light-blue-btn" role="button" target="_blank">project webpage</a>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ol>
+
+        <ol class="bibliography">
+          <li>
+            <div class="row">
+              <div class="col-sm-2 abbr">
+                <abbr class="badge z-depth-1 conference">CVPR</abbr>  
+              </div>
+              <div id="bengio2021proactivecontacttracing" class="col-sm-10">
+                <h2 class="title" style="font-size: 1rem;">Matching feature sets for few-shot image classification</h2>
+                <div class="author" style="font-size: 0.9rem;">
+                  <strong>Arman Afrasiyabi</strong>, <a href="https://mila.quebec/en/person/hugo-larochelle/">Hugo Larochelle</a>, <a href="http://vision.gel.ulaval.ca/~jflalonde/">Jean-François Lalonde</a>, <a href="http://vision.gel.ulaval.ca/~cgagne/">Christian Gagné</a>
+                </div>
+                <div class="periodical" style="font-size: 0.9rem;">
+                  <em>International Conference on Computer Vision and Pattern Recognition, 2022</em>
+                </div>
+                <div class="pagelinks">
+                  <a href="https://lvsn.github.io/SetFeat/" class="btn btn-sm z-depth-0 light-blue-btn" role="button" target="_blank">project webpage</a>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ol>
+
+        <ol class="bibliography">
+          <li>
+            <div class="row">
+              <div class="col-sm-2 abbr">
+                <abbr class="badge z-depth-1 conference">ICCV</abbr>  
+              </div>
+              <div id="bengio2021proactivecontacttracing" class="col-sm-10">
+                <h2 class="title" style="font-size: 1rem;">Mixture-based feature space learning for few-shot image classification</h2>
+                <div class="author" style="font-size: 0.9rem;">
+                  <strong>Arman Afrasiyabi</strong>, <a href="http://vision.gel.ulaval.ca/~jflalonde/">Jean-François Lalonde</a>, <a href="http://vision.gel.ulaval.ca/~cgagne/">Christian Gagné</a>
+                </div>
+                <div class="periodical" style="font-size: 0.9rem;">
+                  <em>International Conference on Computer Vision, 2021</em>
+                </div>
+                <div class="pagelinks">
+                  <a href="https://lvsn.github.io/MixtFSL/" class="btn btn-sm z-depth-0 light-blue-btn" role="button" target="_blank">project webpage</a>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ol>
+
+        <ol class="bibliography">
+          <li>
+            <div class="row">
+              <div class="col-sm-2 abbr">
+                <abbr class="badge z-depth-1 conference">ECCV</abbr> 
+                <abbr class="badge z-depth-1 award">Spotlight</abbr> 
+              </div>
+              <div id="bengio2021proactivecontacttracing" class="col-sm-10">
+                <h2 class="title" style="font-size: 1rem;">Associative alignment for few-shot image classification</h2>
+                <div class="author" style="font-size: 0.9rem;">
+                  <strong>Arman Afrasiyabi</strong>, <a href="http://vision.gel.ulaval.ca/~jflalonde/">Jean-François Lalonde</a>, <a href="http://vision.gel.ulaval.ca/~cgagne/">Christian Gagné</a>
+                </div>
+                <div class="periodical" style="font-size: 0.9rem;">
+                  <em>European Conference on Computer Vision, 2020</em>
+                </div>
+                <div class="pagelinks">
+                  <a href="https://lvsn.github.io/associative-alignment/" class="btn btn-sm z-depth-0 light-blue-btn" role="button" target="_blank">project webpage</a>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ol>
+
+        <ol class="bibliography">
+          <li>
+            <div class="row">
+              <div class="col-sm-2 abbr">
+                <abbr class="badge z-depth-1 conference">ICASSP</abbr>  
+              </div>
+              <div id="bengio2021proactivecontacttracing" class="col-sm-10">
+                <h2 class="title" style="font-size: 1rem;">Non-euclidean vector product for neural networks</h2>
+                <div class="author" style="font-size: 0.9rem;">
+                  <strong>Arman Afrasiyabi</strong>,
+                  <a href="https://scholar.google.com/citations?user=yQPCimQAAAAJ&hl=en">Diaa Badawi</a>, <a href="http://user.ceng.metu.edu.tr/~bnasir/">Baris Nasir</a>, Ozan Yildiz,
+                  <a href="https://scholar.google.co.uk/citations?user=zPFQ2BwAAAAJ&hl=en">Fatoş T. Yarman Vural</a>, <a href="https://scholar.google.com/citations?user=apugsswAAAAJ&hl=en">A Enis Çetin</a>
+                </div>
+                <div class="periodical" style="font-size: 0.9rem;">
+                  <em>International Conference on Acoustics, Speech and Signal Processing, 2018</em>
+                </div>
+                <div class="links">
+                  <a href="https://par.nsf.gov/servlets/purl/10067379" class="btn btn-sm z-depth-0" role="button" target="_blank">paper</a>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ol>
+
+        <ol class="bibliography">
+          <li>
+            <div class="row">
+              <div class="col-sm-2 abbr">
+                <abbr class="badge z-depth-1 conference">ICCI*CC</abbr>  
+              </div>
+              <div id="bengio2021proactivecontacttracing" class="col-sm-10">
+                <h2 class="title" style="font-size: 1rem;">A sparse temporal mesh model for brain decoding</h2>
+                <div class="author" style="font-size: 0.9rem;">
+                  <strong>Arman Afrasiyabi</strong>,
+                  <a href="https://itironal.github.io/">Itır Önal Ertuğrul</a>,
+                  <a href="https://scholar.google.co.uk/citations?user=zPFQ2BwAAAAJ&hl=en">Fatoş T. Yarman Vural</a>
+                </div>
+                <div class="periodical" style="font-size: 0.9rem;">
+                  <em>15th International Conference on Cognitive Informatics & Cognitive, 2016</em>
+                </div>
+                <div class="links">
+                  <a href="https://ieeexplore.ieee.org/abstract/document/7862035" class="btn btn-sm z-depth-0" role="button" target="_blank">paper</a>   
+                </div>
+              </div>
+            </div>
+          </li>  
+        </ol>
+
+        [<a href="https://scholar.google.com/citations?hl=en&user=eLmbCr8AAAAJ&view_op=list_works&sortby=pubdate" target="_blank" title="Google Scholar"><i class="ai ai-google-scholar pl-1 pr-1"></i><a>] see my <a href="https://scholar.google.com/citations?hl=en&user=eLmbCr8AAAAJ&view_op=list_works&sortby=pubdate">Google Scholar</a> for all the publications.
       </div>
     </div>
-  </li>
-</ol>
 
- 
-<ol class="bibliography">
-  <li>
-    <div class="row">
-      <div class="col-sm-2 abbr">
-        <abbr class="badge z-depth-1 conference">ICASSP</abbr>  
+    <!-- ===== RIGHT: Simulation & Teaching panels ===== -->
+      <!-- Teaching panel -->
+      <div class="panel-card">
+        <h5><strong>Teaching</strong></h5>
+        <div>
+          <button id="btnTeaching" class="btn btn-teach btn-half" type="button" title="Open sample lecture (PDF)">Gradient Descent</button>
+        </div> 
       </div>
-      <div id="bengio2021proactivecontacttracing" class="col-sm-10">
-        <h2 class="title" style="font-size: 1rem;">Latent representation learning for multimodal brain activity translation</h2>
-        <div class="author" style="font-size: 0.9rem;">
-          </a> <strong>Arman Afrasiyabi</strong>, Dhananjay Bhaskar, Erica L Busch, Laurent Caplette, Rahul Singh, Guillaume Lajoie, Nicholas B Turk-Browne, Smita Krishnaswamy</a>
-        </div>
-        <div class="periodical" style="font-size: 0.9rem;">
-          <em>International Conference on Acoustics, Speech and Signal Processing, 2025</em>
-        </div>
-        <div class="links">
-          <a href="https://arxiv.org/pdf/2409.18462" class="btn btn-sm z-depth-0 light-blue-btn" role="button" target="_blank">paper</a>
-        </div>
-      </div>
-    </div>
-  </li>
-</ol>
+    </aside>
 
-
-
-
-<ol class="bibliography"> 
-  <li>
-    <div class="row">
-      <div class="col-sm-2 abbr">
-        <abbr class="badge z-depth-1 conference">CCAM</abbr>  
+    <aside class="news-col">
+      <!-- Simulation panel -->
+      <div class="panel-card">
+        <h5><strong>Simulation</strong></h5>
+        <div class="d-flex flex-wrap" style="gap:.5rem;">
+          <button id="btnSimulation" class="btn btn-sim btn-half" type="button">FitzHugh–Nagumo</button>
+          <button id="btnHodgkin" class="btn btn-sim btn-half" type="button">Hodgkin–Huxley</button>
+        </div> 
       </div>
-      <div id="bengio2021proactivecontacttracing" class="col-sm-10">
-        <h2 class="title" style="font-size: 1rem;">Looking through the mind's eye via multimodal encoder-decoder networks</h2>
-        <div class="author" style="font-size: 0.9rem;">
-          </a> <strong>Arman Afrasiyabi</strong>,  Erica Busch, Rahul Singh, Dhananjay Bhaskar, Laurent Caplette, Nicholas Turk-Browne, Smita Krishnaswamy</a>
-        </div>
-        <div class="periodical" style="font-size: 0.9rem;">
-          <em>Center for Collaborative Arts and Media Journal, 2024</em>
-        </div>
-        <div class="links">
-          <a href="https://arxiv.org/pdf/2410.00047" class="btn btn-sm z-depth-0 light-blue-btn" role="button" target="_blank">paper</a>
-        </div>
-      </div>
-    </div>
-  </li>
-</ol>
-
-
-<ol class="bibliography">
-  <li>
-    <div class="row">
-      <div class="col-sm-2 abbr">
-        <abbr class="badge z-depth-1 conference">ICCV</abbr>  
-      </div>
-      <div id="bengio2021proactivecontacttracing" class="col-sm-10">
-        <h2 class="title" style="font-size: 1rem;">DarSwin: distortion aware radial swin transformer</h2>
-        <div class="author" style="font-size: 0.9rem;">
-          <a>Akshaya Athwale, </a> <strong>Arman Afrasiyabi</strong>, Justin Lague, Ichrak Shili, Ola Ahmad, <a href="http://vision.gel.ulaval.ca/~jflalonde/">Jean-François Lalonde</a>
-        </div>
-        <div class="periodical" style="font-size: 0.9rem;">
-          <em>International Conference on Computer Vision, 2023</em>
-        </div>
-        <div class="pagelinks">
-          <a href="https://lvsn.github.io/darswin/" class="btn btn-sm z-depth-0 light-blue-btn" role="button" target="_blank">project webpage</a>
-        </div>
-      </div>
-    </div>
-  </li>
-</ol>
- 
-
-<ol class="bibliography">
-  <li>
-    <div class="row">
-      <div class="col-sm-2 abbr">
-        <abbr class="badge z-depth-1 conference">CVPR</abbr>  
-      </div>
-      <div id="bengio2021proactivecontacttracing" class="col-sm-10">
-        <h2 class="title" style="font-size: 1rem;">Matching feature sets for few-shot image classification</h2>
-        <div class="author" style="font-size: 0.9rem;">
-          <strong>Arman Afrasiyabi</strong>, <a href="https://mila.quebec/en/person/hugo-larochelle/">Hugo Larochelle</a>, <a href="http://vision.gel.ulaval.ca/~jflalonde/">Jean-François Lalonde</a>, <a href="http://vision.gel.ulaval.ca/~cgagne/">Christian Gagné</a>
-        </div>
-        <div class="periodical" style="font-size: 0.9rem;">
-          <em>International Conference on Computer Vision and Pattern Recognition, 2022</em>
-        </div>
-		
-        <div class="pagelinks">
-			<a href="https://lvsn.github.io/SetFeat/" class="btn btn-sm z-depth-0 light-blue-btn" role="button" target="_blank">project webpage</a>
-		</div>
-      
-	  </div>
-    </div>
-  </li>
-</ol>
-
-		
-<ol class="bibliography">
-  <li>
-    <div class="row">
-      <div class="col-sm-2 abbr">
-        <abbr class="badge z-depth-1 conference">ICCV</abbr>  
-      </div>
-      <div id="bengio2021proactivecontacttracing" class="col-sm-10">
-        <h2 class="title" style="font-size: 1rem;">Mixture-based feature space learning for few-shot image classification</h2>
-        <div class="author" style="font-size: 0.9rem;">
-          <strong>Arman Afrasiyabi</strong>, <a href="http://vision.gel.ulaval.ca/~jflalonde/">Jean-François Lalonde</a>, <a href="http://vision.gel.ulaval.ca/~cgagne/">Christian Gagné</a>
-        </div>
-        <div class="periodical" style="font-size: 0.9rem;">
-          <em>International Conference on Computer Vision, 2021</em>
-        </div>
-        <div class="pagelinks">
-          <a href="https://lvsn.github.io/MixtFSL/" class="btn btn-sm z-depth-0 light-blue-btn" role="button" target="_blank">project webpage</a>
-        </div>
-      </div>
-    </div>
-  </li>
-</ol>
-		
-		
-<ol class="bibliography">
-  <li>
-    <div class="row">
-      <div class="col-sm-2 abbr">
-        <abbr class="badge z-depth-1 conference">ECCV</abbr> 
-        <abbr class="badge z-depth-1 award">Spotlight</abbr> 
-      </div>
-      <div id="bengio2021proactivecontacttracing" class="col-sm-10">
-        <h2 class="title" style="font-size: 1rem;">Associative alignment for few-shot image classification</h2>
-        <div class="author" style="font-size: 0.9rem;">
-          <strong>Arman Afrasiyabi</strong>, <a href="http://vision.gel.ulaval.ca/~jflalonde/">Jean-François Lalonde</a>, <a href="http://vision.gel.ulaval.ca/~cgagne/">Christian Gagné</a>
-        </div>
-        <div class="periodical" style="font-size: 0.9rem;">
-          <em>European Conference on Computer Vision, 2020</em>
-        </div>
-        <div class="pagelinks">
-          <a href="https://lvsn.github.io/associative-alignment/" class="btn btn-sm z-depth-0 light-blue-btn" role="button" target="_blank">project webpage</a>
-        </div>
-      </div>
-    </div>
-  </li>
-</ol>
-
-
-
-<ol class="bibliography">
-  <li>
-    <div class="row">
-      <div class="col-sm-2 abbr">
-        <abbr class="badge z-depth-1 conference">ICASSP</abbr>  
-      </div>
-      <div id="bengio2021proactivecontacttracing" class="col-sm-10">
-        <h2 class="title" style="font-size: 1rem;">Non-euclidean vector product for neural networks</h2>
-        <div class="author" style="font-size: 0.9rem;">
-          <strong>Arman Afrasiyabi</strong>,
-          <a href="https://scholar.google.com/citations?user=yQPCimQAAAAJ&hl=en">Diaa Badawi</a>, <a href="http://user.ceng.metu.edu.tr/~bnasir/">Baris Nasir</a>, Ozan Yildiz,
-          <a href="https://scholar.google.co.uk/citations?user=zPFQ2BwAAAAJ&hl=en">Fatoş T. Yarman Vural</a>, <a href="https://scholar.google.com/citations?user=apugsswAAAAJ&hl=en">A Enis Çetin</a>
-        </div>
-        <div class="periodical" style="font-size: 0.9rem;">
-          <em>International Conference on Acoustics, Speech and Signal Processing, 2018</em>
-        </div>
-        <div class="links">
-          <a href="https://par.nsf.gov/servlets/purl/10067379" class="btn btn-sm z-depth-0" role="button" target="_blank">paper</a>
-        </div>
-      </div>
-    </div>
-  </li>
-</ol>
-		
-		
-<ol class="bibliography">
-  <li>
-    <div class="row">
-      <div class="col-sm-2 abbr">
-        <abbr class="badge z-depth-1 conference">ICCI*CC</abbr>  
-      </div>
-      <div id="bengio2021proactivecontacttracing" class="col-sm-10">
-        <h2 class="title" style="font-size: 1rem;">A sparse temporal mesh model for brain decoding</h2>
-        <div class="author" style="font-size: 0.9rem;">
-          <strong>Arman Afrasiyabi</strong>,
-          <a href="https://itironal.github.io/">Itır Önal Ertuğrul</a>,
-          <a href="https://scholar.google.co.uk/citations?user=zPFQ2BwAAAAJ&hl=en">Fatoş T. Yarman Vural</a>
-        </div>
-        <div class="periodical" style="font-size: 0.9rem;">
-          <em>15th International Conference on Cognitive Informatics & Cognitive, 2016</em>
-        </div>
-        <div class="links">
-          <a href="https://ieeexplore.ieee.org/abstract/document/7862035" class="btn btn-sm z-depth-0" role="button" target="_blank">paper</a>   
-        </div>
-      </div>
-    </div>
-  </li>  
-</ol>
-
-  
-	  [<a href="https://scholar.google.com/citations?hl=en&user=eLmbCr8AAAAJ&view_op=list_works&sortby=pubdate" target="_blank" title="Google Scholar"><i class="ai ai-google-scholar pl-1 pr-1"></i><a>] see my <a href="https://scholar.google.com/citations?hl=en&user=eLmbCr8AAAAJ&view_op=list_works&sortby=pubdate">Google Scholar</a> for all the publications.
+  </div>
 </section>   
-
+<!-- ===================== END PUBLICATIONS + RIGHT COLUMN ===================== -->
 
     <!-- TEACHING EXPERIENCE -->
     <section id="teaching_experience" class="some-section">
@@ -813,7 +820,7 @@
         });
       }
 
-      // Hodgkin–Huxley button (now loads HH page)
+      // Hodgkin–Huxley button
       var hhBtn = document.getElementById('btnHodgkin');
       if (hhBtn && simFrame) {
         hhBtn.addEventListener('click', function () {
