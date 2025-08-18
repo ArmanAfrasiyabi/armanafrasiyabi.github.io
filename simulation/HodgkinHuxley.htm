@@ -13,7 +13,6 @@
     --phase-h: 240px;
   }
 
-  
   html,body{height:100%;margin:0;background:var(--bg);color:var(--ink);
     font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial,'Noto Sans',sans-serif}
 
@@ -61,7 +60,6 @@
     <div class="layout">
       
       <!-- LEFT PANEL -->
-       
       <div class="panel">
         <h1>Hodgkin–Huxley Simulation</h1>
         <span class="half-line" aria-hidden="true"></span>
@@ -111,7 +109,7 @@
         </div>
       </div>
 
-      <!-- RIGHT PANEL (title here) -->
+      <!-- RIGHT PANEL -->
       <div class="panel" style="display:flex; flex-direction:column; gap:12px;">
         <h1>Membrane Potential & Phase Planes</h1>
 
@@ -146,6 +144,11 @@
   const $ = (id)=>document.getElementById(id);
   const cvV=$('cvV'), cvPn=$('cvPn'), cvPm=$('cvPm'), cvPh=$('cvPh'), cvPmh=$('cvPmh');
 
+  /* --------- capture defaults so Reset can restore ALL params --------- */
+  const INPUT_IDS = ['Iamp','Istart','Idur','Tmax','dt','V0','Vstar','gNa','gK','gL','Cm','ENa','EK','EL'];
+  const DEFAULTS = {};
+  INPUT_IDS.forEach(id => { const el = $(id); if (el) DEFAULTS[id] = el.value; });
+
   /* ---------- HH rates & helpers ---------- */
   function vtrap(x, k){ if (Math.abs(x/k)<1e-6) return k*(1 - x/(2*k)); return x/(1 - Math.exp(-x/k)); }
   function alpha_m(V){ return 0.1 * vtrap(V + 40, 10); }
@@ -163,8 +166,8 @@
   let idx=0, anim=null, running=false, paused=false;
 
   /* Speed control */
-  const SPEED = 0.3;        // 50% of previous speed
-  let advanceAcc = 0;       // accumulator for fractional advancement
+  const SPEED = 0.3;        // playback speed factor
+  let advanceAcc = 0;
 
   /* ---------- Params ---------- */
   function P(){
@@ -292,7 +295,7 @@
       const INa = p.gNa*Math.pow(m,3)*h*(V - p.ENa);
       const IK  = p.gK *Math.pow(n,4)*(V - p.EK);
       const IL  = p.gL *(V - p.EL);
-      return (0 - INa - IK - IL)/p.Cm;
+      return (0 - INa - IK - IL)/p.Cm; // field at Iext=0
     }
     function dm_given(V, m){ return alpha_m(V)*(1-m) - beta_m(V)*m; }
     function dh_given(V, h){ return alpha_h(V)*(1-h) - beta_h(V)*h; }
@@ -421,7 +424,7 @@
     ctx.lineWidth=1; ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2); ctx.stroke();
   }
 
-  /* ---------- FHN-style fading trail (thicker/opaque near head) ---------- */
+  /* ---------- FHN-style fading trail ---------- */
   function drawFitzTrail(ctx, xSeries, ySeries, xmap, ymap, endIndex, color, maxSeg=260){
     if (endIndex < 1) return;
     const startIndex = Math.max(1, endIndex - maxSeg);
@@ -567,7 +570,7 @@
   function start(){
     cancelAnimationFrame(anim);
     running=true; paused=false; idx=0;
-    advanceAcc = 0; // reset speed accumulator
+    advanceAcc = 0;
     $('btnPause').disabled=false; $('btnPause').textContent='Pause';
 
     setTimeout(()=>{
@@ -585,7 +588,7 @@
     advanceAcc += baseStride * SPEED;
 
     let adv = Math.floor(advanceAcc);
-    if (adv < 1) { // not enough to advance this frame; redraw and reschedule
+    if (adv < 1) {
       anim = requestAnimationFrame(tick);
       return;
     }
@@ -604,11 +607,27 @@
     if (!paused){ paused=true; $('btnPause').textContent='Resume'; cancelAnimationFrame(anim); }
     else { paused=false; $('btnPause').textContent='Pause'; anim=requestAnimationFrame(tick); }
   }
+
+  /* ---- Reset: stop, restore defaults, recompute, redraw initial state ---- */
+  function resetParamsToDefaults(){
+    INPUT_IDS.forEach(id => { const el=$(id); if (el && DEFAULTS[id] !== undefined) el.value = DEFAULTS[id]; });
+  }
   function resetSim(){
-    cancelAnimationFrame(anim); running=false; paused=false; idx=0;
+    if (anim) cancelAnimationFrame(anim);
+    running=false; paused=false; idx=0;
     advanceAcc = 0;
-    t=[];V=[];m=[];h=[];n=[];I=[];
-    $('btnPause').disabled=true;
+
+    // restore ALL inputs to their initial default values
+    resetParamsToDefaults();
+
+    // rebuild data/fields so plots reflect the defaults immediately
+    simulate();
+    computeNullclines();
+    computeVectorFields();
+
+    $('btnPause').disabled = true;
+    $('btnPause').textContent = 'Pause';
+
     fitAll(); redrawAll();
   }
 
@@ -617,6 +636,7 @@
   $('btnPause').addEventListener('click', pauseResume);
   $('btnReset').addEventListener('click', resetSim);
 
+  // update fields that affect geometry immediately
   ['Vstar','gNa','gK','gL','ENa','EK','EL'].forEach(id=>{
     const el=$(id); if (!el) return;
     el.addEventListener('input', ()=>{ computeNullclines(); computeVectorFields(); redrawAll(); });
