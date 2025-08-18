@@ -373,8 +373,8 @@
     .pubs-news-wrap{
       display:flex; align-items:flex-start; gap:24px; width:100%;
     }
-    .pubs-col{flex:0 0 65%; max-width:65%;}
-    .news-col{flex:0 0 35%; max-width:35%; position:relative; top:12px; left:-8px;} /* a little down & left */
+    .pubs-col{flex:0 0 70%; max-width:70%;}
+    .news-col{flex:0 0 30%; max-width:30%; position:relative; top:12px; left:-8px;} /* a little down & left */
     @media (max-width: 991.98px){
       .pubs-news-wrap{flex-direction:column}
       .pubs-col,.news-col{flex:0 0 100%; max-width:100%; left:0; top:0;}
@@ -599,16 +599,16 @@
     </div>
 
     <!-- ===== RIGHT: Simulation & Teaching panels ===== -->
-      <!-- Teaching panel -->
+    <aside class="news-col">
+
+    <!-- Teaching panel -->
       <div class="panel-card">
         <h5><strong>Teaching</strong></h5>
         <div>
-          <button id="btnTeaching" class="btn btn-teach btn-half" type="button" title="Open sample lecture (PDF)">Gradient Descent</button>
+          <button id="btnTeaching" class="btn btn-teach btn-half" type="button" title="Open sample lecture (PDF)">Gradient Descent </button>
         </div> 
       </div>
-    </aside>
-
-    <aside class="news-col">
+    
       <!-- Simulation panel -->
       <div class="panel-card">
         <h5><strong>Simulation</strong></h5>
@@ -617,6 +617,9 @@
           <button id="btnHodgkin" class="btn btn-sim btn-half" type="button">Hodgkin–Huxley</button>
         </div> 
       </div>
+
+      
+    </aside>
   </div>
 </section>   
 <!-- ===================== END PUBLICATIONS + RIGHT COLUMN ===================== -->
