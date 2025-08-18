@@ -135,7 +135,7 @@
 
       <div class="spacer"></div>
 
-      <div class="control"><label for="N">N</label><input id="N" type="number" min="1" max="2000" step="1" value="1"></div>
+      <div class="control"><label for="N">N</label><input id="N" type="number" min="1" max="2000" step="1" value="500"></div>
       <div class="control"><label for="I">I</label><input id="I" type="number" step="0.01" value="0.5"></div>
       <div class="control"><label for="a">a</label><input id="a" type="number" step="0.01" value="0.7"></div>
       <div class="control"><label for="b">b</label><input id="b" type="number" step="0.01" value="0.8"></div>
@@ -153,8 +153,8 @@
   <script>
   // ------------------------- Defaults (fixed v/w limits) -------------------------
   const DEFAULTS = Object.freeze({
-    N:1, I:0.5, a:0.7, b:0.8, tau:12.5, dt:0.05,
-    steps:4000, fps:100, trail:160, seed:3,
+    N:500, I:0.5, a:0.7, b:0.8, tau:12.5, dt:0.05,
+    steps:4000, fps:60, trail:160, seed:3,
     vmin:-2.2, vmax:2.2, wmin:-1.5, wmax:3.5
   });
 
@@ -341,7 +341,7 @@
 
   function getParams(){
     const P={
-      N: clamp(parseInt($('N').value||1),1,2000),
+      N: clamp(parseInt($('N').value||500),1,2000),
       I: parseFloat($('I').value||DEFAULTS.I),
       a: parseFloat($('a').value||DEFAULTS.a),
       b: parseFloat($('b').value||DEFAULTS.b),
