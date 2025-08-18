@@ -152,6 +152,72 @@
       -webkit-overflow-scrolling: touch;
       display: block;
     }
+
+    /* === The ONLY change you asked for (affects ONLY the three buttons) === */
+    #btnSimulation, #btnHodgkin, #btnTeaching {
+      /* 0.7x size */
+      font-size: 0.7rem !important;
+      padding: 0.09rem 0.26rem !important;
+      line-height: 1.05;
+      border-radius: 9999px !important;
+
+      /* Fancy look */
+      position: relative;
+      background-image: linear-gradient(135deg, var(--sim-blue) 0%, #2a6cd6 100%) !important;
+      border: 1px solid #2a6cd6 !important;
+      box-shadow:
+        0 6px 14px rgba(11, 61, 145, 0.25),
+        0 2px  4px rgba(11, 61, 145, 0.35);
+      letter-spacing: 0.2px;
+      transition: transform .18s ease, box-shadow .18s ease, background-position .3s ease;
+      background-size: 200% 200%;
+      color: #fff !important;
+      overflow: hidden;
+    }
+    #btnSimulation:hover, #btnHodgkin:hover, #btnTeaching:hover {
+      transform: translateY(-1px);
+      background-position: 100% 0;
+      box-shadow:
+        0 10px 22px rgba(11, 61, 145, 0.30),
+        0  4px  8px rgba(11, 61, 145, 0.35);
+    }
+    #btnSimulation:active, #btnHodgkin:active, #btnTeaching:active {
+      transform: translateY(0);
+      box-shadow:
+        0 4px 10px rgba(11, 61, 145, 0.25),
+        0 1px  3px rgba(11, 61, 145, 0.35);
+    }
+    #btnSimulation:focus-visible, #btnHodgkin:focus-visible, #btnTeaching:focus-visible {
+      outline: none;
+      box-shadow:
+        0 0 0 3px rgba(42, 108, 214, 0.25),
+        0 6px 14px rgba(11, 61, 145, 0.25);
+    }
+    /* subtle sheen on hover */
+    #btnSimulation::after, #btnHodgkin::after, #btnTeaching::after {
+      content: "";
+      position: absolute;
+      top: 0; left: -150%;
+      width: 50%; height: 100%;
+      background: linear-gradient(120deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.25) 50%, rgba(255,255,255,0) 100%);
+      transform: skewX(-20deg);
+      transition: left .6s ease;
+      pointer-events: none;
+    }
+    #btnSimulation:hover::after, #btnHodgkin:hover::after, #btnTeaching:hover::after {
+      left: 150%;
+    }
+    /* icons via Font Awesome (no HTML changes) */
+    #btnSimulation::before, #btnHodgkin::before, #btnTeaching::before {
+      font-family: "Font Awesome 5 Free";
+      font-weight: 900;
+      display: inline-block;
+      margin-right: .4em;
+      vertical-align: -0.05em;
+    }
+    #btnSimulation::before { content: "\f83e"; } /* wave-square */
+    #btnHodgkin::before   { content: "\f0e7"; } /* bolt */
+    #btnTeaching::before  { content: "\f201"; } /* chart-line */
   </style>
 
   <script>
