@@ -1,5 +1,3 @@
- 
- 
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -308,8 +306,9 @@
 
       <!-- Contact + Buttons -->
       <div class="mt-3 mb-4">
-        <button id="btnSimulation" class="btn btn-sim btn-half">Simulation: FitzHugh–Nagumo </button>
-        <button id="btnTeaching" class="btn btn-sim btn-half" title="Open sample lecture (PDF)">Teaching: SGD</button>
+          <strong>Simulation</strong>: <button id="btnSimulation" class="btn btn-sim btn-half">FitzHugh–Nagumo </button>
+          <button id="btnHodgkin" class="btn btn-sim btn-half">Hodgkin–Huxley </button><br>
+          <strong>Teaching</strong>: <button id="btnTeaching" class="btn btn-sim btn-half" title="Open sample lecture (PDF)">Gradient Descent</button>
       </div>
       <p class="mt-4 mb-1">Contact:</p>
       <p style="margin-top:0.25rem;">
@@ -596,7 +595,7 @@
             <li>At <strong>CVPR</strong> 2022, we are presenting Matching feature sets for few-shot image classification.</li>
             <li>In 12th Feb. 2022, upon the invitation (<a href="https://www.linkedin.com/posts/computer-vision-talks_cvtarmanafrasiyabi-activity-6897768952760807424-Fb-B">invitation link</a>) of <strong>Computer Vision Talks</strong>, I presented our MixtFSL.</li>
             <li>At <strong>ICCV</strong> 2021, I am presenting Mixture-based feature space learning for few-shot... <a href="https://www.youtube.com/watch?v=DxMCHCQKDCQ">[video]</a></li>
-            <li>On 26, Feb 2021, I presented Transformers to Prof. <a href="http://vision.gel.ulaval.ca/~jflalonde/">Jean-François Lalonde's</a> research group. <a href="./pdfs/ArmanPresentation_Transfoermers.pdf">[my slides]</a></li>
+            <li>On 26, Feb 2021, I presented Transformers to Prof. <a href="./pdfs/ArmanPresentation_Transfoermers.pdf">Jean-François Lalonde's</a> research group. <a href="./pdfs/ArmanPresentation_Transfoermers.pdf">[my slides]</a></li>
             <li>In Feb 2021, I gave a presentation on PMM and Ass. Alignment at <a href="https://iid.hbw01.fsg.ulaval.ca/evenements/seminaire-iid-associative-alignment-for-few-shot-image-classification/">IID</a>, Université Laval. <a href="./pdfs/ArmanPresentation_8Feb2020_IID.pdf">[my slides]</a></li>
             <li>At <strong>ECCV</strong> 2020, I presented our work “Associative Alignment for Few-shot Classification”. <a href="https://lvsn.github.io/associative-alignment/">[video]</a></li>
             <li>In July 2020, I gave a talk on "Advances in few-shot learning" at the IFT 6501 course. <a href="./pdfs/26-6-2020 advances in few-shot learning .pdf">[my slides]</a></li>
@@ -726,12 +725,15 @@
 
     // ---- Button hooks ----
     document.addEventListener('DOMContentLoaded', function () {
-      // Simulation button
-      var simBtn = document.getElementById('btnSimulation');
       var simFrame = document.getElementById('simFrame');
+
+      // FitzHugh–Nagumo button
+      var simBtn = document.getElementById('btnSimulation');
       if (simBtn && simFrame) {
         simBtn.addEventListener('click', function () {
           simFrame.src = 'simulation/FitzHughNagumo.htm';
+          var label = document.getElementById('simModalLabel');
+          if (label) label.textContent = 'FitzHugh–Nagumo Simulation';
           $('#simModal').modal('show');
         });
         simFrame.addEventListener('load', function () {
@@ -745,22 +747,30 @@
         });
       }
 
+      // Hodgkin–Huxley button (now loads HH page)
+      var hhBtn = document.getElementById('btnHodgkin');
+      if (hhBtn && simFrame) {
+        hhBtn.addEventListener('click', function () {
+          simFrame.src = 'simulation/HodgkinHuxley.htm';
+          var label = document.getElementById('simModalLabel');
+          if (label) label.textContent = 'Hodgkin–Huxley Simulation';
+          $('#simModal').modal('show');
+        });
+      }
+
       // Teaching button
       var teachBtn   = document.getElementById('btnTeaching');
       var teachFrame = document.getElementById('teachFrame');
       if (teachBtn && teachFrame) {
         teachBtn.addEventListener('click', function () {
-          // Fit page and show toolbar; adjust as needed: #page=1, #zoom=page-fit
           teachFrame.src = 'teaching/lecture_3_sgd.pdf#zoom=page-fit&toolbar=1&navpanes=0';
           $('#teachModal').modal('show');
         });
         teachFrame.addEventListener('load', function () {
           sizeTeach();
-          // No same-origin modifications necessary for PDF
         });
       }
     });
   </script>
 </body>
 </html>
-```
