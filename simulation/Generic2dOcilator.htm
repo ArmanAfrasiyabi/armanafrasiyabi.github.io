@@ -263,6 +263,41 @@
     ctx.restore();
   }
 
+  // ✅ NEW: draw coordinate (zero) lines at V=0 and W=0
+  function drawZeroLines(ctx, tf, {
+    color = 'rgba(126,140,194,0.45)',
+    width = 1.2,
+    dash = [6, 6],
+  } = {}) {
+    const { pad, width: W, height: H } = tf;
+
+    ctx.save();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = width;
+    ctx.setLineDash(dash);
+
+    // V = 0 vertical line (x = 0)
+    if (tf.xmin <= 0 && 0 <= tf.xmax) {
+      const x0 = tf.toX(0);
+      ctx.beginPath();
+      ctx.moveTo(x0, pad);
+      ctx.lineTo(x0, H - pad);
+      ctx.stroke();
+    }
+
+    // W = 0 horizontal line (y = 0)
+    if (tf.ymin <= 0 && 0 <= tf.ymax) {
+      const y0 = tf.toY(0);
+      ctx.beginPath();
+      ctx.moveTo(pad, y0);
+      ctx.lineTo(W - pad, y0);
+      ctx.stroke();
+    }
+
+    ctx.setLineDash([]);
+    ctx.restore();
+  }
+
   // Model
   function g2d(V, W, P){
     const dV = P.d * P.tau * ( -P.f*V*V*V + P.e*V*V + P.g*V + P.alpha*W + P.gamma*P.I );
@@ -393,6 +428,9 @@
     const ctx=pctx;
     ctx.clearRect(0,0,tf.width,tf.height);
     drawAxes(ctx, tf, {xTicks:6,yTicks:6, xLabel:'V', yLabel:'W', showGrid:false});
+
+    // ✅ ADD: V=0 and W=0 coordinate lines
+    drawZeroLines(ctx, tf);
 
     const nx=24, ny=24;
     ctx.save();

@@ -114,7 +114,6 @@
         </div>
       </div>
       <div class="card canvas-card">
-        <!-- NOTE ADDED HERE -->
         <header><h2>Time series (shows up to 3 W and their Vs)</h2></header>
         <canvas id="time"></canvas>
       </div>
@@ -170,6 +169,7 @@
   function makeTransform(xmin,xmax,ymin,ymax,width,height,pad=42){
     const sx=(width-2*pad)/(xmax-xmin), sy=(height-2*pad)/(ymax-ymin);
     return {
+      xmin,xmax,ymin,ymax,
       toX: x=> pad + (x-xmin)*sx,
       toY: y=> height - pad - (y-ymin)*sy,
       fromX: X=> xmin + (X-pad)/sx,
@@ -210,29 +210,86 @@
     ctx.restore();
   }
 
+  // ✅ NEW: draw coordinate (zero) lines at v=0 and w=0
+  function drawZeroLines(ctx, tf, {
+    color = 'rgba(126,140,194,0.45)',
+    width = 1.2,
+    dash = [6, 6],
+  } = {}) {
+    const { pad, width: W, height: H } = tf;
+
+    ctx.save();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = width;
+    ctx.setLineDash(dash);
+
+    // v = 0 vertical line
+    if (tf.xmin <= 0 && 0 <= tf.xmax) {
+      const x0 = tf.toX(0);
+      ctx.beginPath();
+      ctx.moveTo(x0, pad);
+      ctx.lineTo(x0, H - pad);
+      ctx.stroke();
+    }
+
+    // w = 0 horizontal line
+    if (tf.ymin <= 0 && 0 <= tf.ymax) {
+      const y0 = tf.toY(0);
+      ctx.beginPath();
+      ctx.moveTo(pad, y0);
+      ctx.lineTo(W - pad, y0);
+      ctx.stroke();
+    }
+
+    ctx.setLineDash([]);
+    ctx.restore();
+  }
+
   // Model & integrator
-  function fhn(v,w,P){ const dv=v-(v*v*v)/3 - w + P.I; const dw=(v+P.a - P.b*w)/P.tau; return [dv,dw]; }
+  function fhn(v,w,P){
+    const dv = v - (v*v*v)/3 - w + P.I;
+    const dw = (v + P.a - P.b*w) / P.tau;
+    return [dv,dw];
+  }
   function rk4(v,w,dt,P){
     const k1=fhn(v,w,P);
     const k2=fhn(v+0.5*dt*k1[0], w+0.5*dt*k1[1], P);
     const k3=fhn(v+0.5*dt*k2[0], w+0.5*dt*k2[1], P);
     const k4=fhn(v+dt*k3[0],   w+dt*k3[1],   P);
-    return [ v+(dt/6)*(k1[0]+2*k2[0]+2*k3[0]+k4[0]),
-             w+(dt/6)*(k1[1]+2*k2[1]+2*k3[1]+k4[1]) ];
+    return [
+      v+(dt/6)*(k1[0]+2*k2[0]+2*k3[0]+k4[0]),
+      w+(dt/6)*(k1[1]+2*k2[1]+2*k3[1]+k4[1])
+    ];
   }
 
   function simulate(P){
     const rng=makeRNG(P.seed|0);
     const V=Array.from({length:P.steps},()=>new Float64Array(P.N));
     const W=Array.from({length:P.steps},()=>new Float64Array(P.N));
-    for(let i=0;i<P.N;i++){ V[0][i]=randUniform(rng,P.vmin,P.vmax); W[0][i]=randUniform(rng,P.wmin,P.wmax); }
+    for(let i=0;i<P.N;i++){
+      V[0][i]=randUniform(rng,P.vmin,P.vmax);
+      W[0][i]=randUniform(rng,P.wmin,P.wmax);
+    }
     for(let t=1;t<P.steps;t++){
       const pv=V[t-1], pw=W[t-1], cv=V[t], cw=W[t];
-      for(let i=0;i<P.N;i++){ const r=rk4(pv[i],pw[i],P.dt,P); cv[i]=r[0]; cw[i]=r[1]; }
+      for(let i=0;i<P.N;i++){
+        const r=rk4(pv[i],pw[i],P.dt,P);
+        cv[i]=r[0]; cw[i]=r[1];
+      }
     }
-    const tAxis=new Float64Array(P.steps); for(let t=0;t<P.steps;t++) tAxis[t]=t*P.dt;
+    const tAxis=new Float64Array(P.steps);
+    for(let t=0;t<P.steps;t++) tAxis[t]=t*P.dt;
+
     let yMin=+Infinity,yMax=-Infinity;
-    for(let t=0;t<P.steps;t++){ for(let i=0;i<P.N;i++){ const a=V[t][i],b=W[t][i]; if(a<yMin)yMin=a; if(b<yMin)yMin=b; if(a>yMax)yMax=a; if(b>yMax)yMax=b; } }
+    for(let t=0;t<P.steps;t++){
+      for(let i=0;i<P.N;i++){
+        const a=V[t][i], b=W[t][i];
+        if(a<yMin) yMin=a;
+        if(b<yMin) yMin=b;
+        if(a>yMax) yMax=a;
+        if(b>yMax) yMax=b;
+      }
+    }
     if(!Number.isFinite(yMin)||!Number.isFinite(yMax)||yMin===yMax){ yMin=-2; yMax=2; }
     const pad=0.05*(yMax-yMin||1); yMin-=pad; yMax+=pad;
     return {V,W,tAxis,yMin,yMax};
@@ -254,16 +311,22 @@
   function cssSize(c){ const r=c.getBoundingClientRect(); return {w:r.width, h:r.height}; }
 
   function drawPhaseStatic(P, tf){
-    const ctx=pctx; ctx.clearRect(0,0,tf.width,tf.height);
+    const ctx=pctx;
+    ctx.clearRect(0,0,tf.width,tf.height);
     drawAxes(ctx, tf, {xTicks:6,yTicks:6, xLabel:'v', yLabel:'w', showGrid:false});
 
+    // ✅ ADD: 0-axes (v=0 and w=0)
+    drawZeroLines(ctx, tf);
+
     // Vector field
-    const nx=24, ny=24; ctx.save(); ctx.strokeStyle='#6f7fb6'; ctx.globalAlpha=.26;
+    const nx=24, ny=24;
+    ctx.save(); ctx.strokeStyle='#6f7fb6'; ctx.globalAlpha=.26;
     for(let i=0;i<=nx;i++){
       const v=P.vmin+i*(P.vmax-P.vmin)/nx;
       for(let j=0;j<=ny;j++){
         const w=P.wmin+j*(P.wmax-P.wmin)/ny;
-        let [dv,dw]=fhn(v,w,P); const sp=Math.hypot(dv,dw)||1e-6; dv/=sp; dw/=sp;
+        let [dv,dw]=fhn(v,w,P);
+        const sp=Math.hypot(dv,dw)||1e-6; dv/=sp; dw/=sp;
         const x=tf.toX(v), y=tf.toY(w), scale=16, x2=x+dv*scale, y2=y-dw*scale;
         ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x2,y2); ctx.stroke();
         const ah=4, ang=Math.atan2(y-y2, x2-x);
@@ -279,14 +342,19 @@
     const samples=600, dvPath=[], dwPath=[];
     for(let i=0;i<=samples;i++){
       const v=P.vmin+i*(P.vmax-P.vmin)/samples;
-      const w_dv0=v-(v*v*v)/3+P.I, w_dw0=(v+P.a)/P.b;
+      const w_dv0 = v - (v*v*v)/3 + P.I;      // dv/dt = 0  =>  w = v - v^3/3 + I
+      const w_dw0 = (v + P.a) / P.b;          // dw/dt = 0  =>  w = (v+a)/b
       dvPath.push([tf.toX(v), tf.toY(w_dv0)]);
       dwPath.push([tf.toX(v), tf.toY(w_dw0)]);
     }
+
     ctx.save(); ctx.strokeStyle='#e7ecff'; ctx.lineWidth=1.6; ctx.beginPath();
-    for(let i=0;i<dvPath.length;i++){ const [x,y]=dvPath[i]; if(i===0)ctx.moveTo(x,y); else ctx.lineTo(x,y); } ctx.stroke(); ctx.restore();
+    for(let i=0;i<dvPath.length;i++){ const [x,y]=dvPath[i]; if(i===0)ctx.moveTo(x,y); else ctx.lineTo(x,y); }
+    ctx.stroke(); ctx.restore();
+
     ctx.save(); ctx.strokeStyle='#e7ecff'; ctx.setLineDash([8,7]); ctx.lineWidth=1.6; ctx.beginPath();
-    for(let i=0;i<dwPath.length;i++){ const [x,y]=dwPath[i]; if(i===0)ctx.moveTo(x,y); else ctx.lineTo(x,y); } ctx.stroke(); ctx.setLineDash([]); ctx.restore();
+    for(let i=0;i<dwPath.length;i++){ const [x,y]=dwPath[i]; if(i===0)ctx.moveTo(x,y); else ctx.lineTo(x,y); }
+    ctx.stroke(); ctx.setLineDash([]); ctx.restore();
   }
 
   function drawPhaseDynamic(P, tf, colors, data, frame){
@@ -296,8 +364,11 @@
       const color=colors[i], t0=Math.max(0, frame-P.trail), L=frame-t0;
       if(L>=1){
         for(let k=t0;k<frame;k++){
-          const j=k-t0, frac=L>1? j/(L-1) : 1, alpha=0.15+0.8*Math.pow(frac,1.5), lw=0.4+1.0*Math.pow(frac,1.5);
-          const x1=tf.toX(data.V[k][i]), y1=tf.toY(data.W[k][i]), x2=tf.toX(data.V[k+1][i]), y2=tf.toY(data.W[k+1][i]);
+          const j=k-t0, frac=L>1? j/(L-1) : 1;
+          const alpha=0.15+0.8*Math.pow(frac,1.5);
+          const lw=0.4+1.0*Math.pow(frac,1.5);
+          const x1=tf.toX(data.V[k][i]), y1=tf.toY(data.W[k][i]);
+          const x2=tf.toX(data.V[k+1][i]), y2=tf.toY(data.W[k+1][i]);
           ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2);
           ctx.lineWidth=lw; ctx.strokeStyle=color; ctx.globalAlpha=alpha; ctx.stroke();
         }
@@ -308,32 +379,67 @@
       ctx.lineWidth=1; ctx.strokeStyle='#0a0f20'; ctx.stroke();
     }
     const t=data.tAxis[frame].toFixed(2);
-    ctx.save(); ctx.fillStyle='rgba(231,236,255,.8)'; ctx.font='600 12px system-ui,-apple-system,Segoe UI,Roboto';
-    ctx.fillText(`t = ${t} s`, tf.pad+8, tf.pad+16); ctx.restore();
+    ctx.save();
+    ctx.fillStyle='rgba(231,236,255,.8)';
+    ctx.font='600 12px system-ui,-apple-system,Segoe UI,Roboto';
+    ctx.fillText(`t = ${t} s`, tf.pad+8, tf.pad+16);
+    ctx.restore();
   }
 
-  // ************* UPDATED: only plot up to 3 trajectories in time panel *************
+  // Time plot (up to 3 trajectories)
   function drawTime(P, tf, colors, data, frame){
-    const ctx=tctx; ctx.clearRect(0,0,tf.width, tf.height);
+    const ctx=tctx;
+    ctx.clearRect(0,0,tf.width, tf.height);
     drawAxes(ctx, tf, {xTicks:6,yTicks:6, xLabel:'Time (s)', yLabel:'v, w', showGrid:false});
 
-    const M = Math.min(3, P.N); // cap to 3 W (and their Vs)
+    // ✅ ADD: horizontal y=0 line in the time plot (since y-axis is value)
+    // (There is no "time=0 vertical axis" because that's just the left border;
+    //  but this draws the 0 baseline for v/w.)
+    drawZeroLines(ctx, makeTransform(0, tf.xmax, tf.ymin, tf.ymax, tf.width, tf.height, tf.pad));
+
+    const M = Math.min(3, P.N);
 
     for(let i=0;i<M;i++){
       const color=colors[i];
+
       // v(t)
-      ctx.save(); ctx.beginPath(); ctx.strokeStyle=color; ctx.lineWidth=1.6; ctx.globalAlpha=.95;
-      for(let k=0;k<=frame;k++){ const x=tf.toX(data.tAxis[k]), y=tf.toY(data.V[k][i]); if(k===0)ctx.moveTo(x,y); else ctx.lineTo(x,y); }
-      ctx.stroke(); ctx.restore();
+      ctx.save();
+      ctx.beginPath();
+      ctx.strokeStyle=color; ctx.lineWidth=1.6; ctx.globalAlpha=.95;
+      for(let k=0;k<=frame;k++){
+        const x=tf.toX(data.tAxis[k]), y=tf.toY(data.V[k][i]);
+        if(k===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+      }
+      ctx.stroke();
+      ctx.restore();
 
       // w(t) dashed
-      ctx.save(); ctx.beginPath(); ctx.strokeStyle=color; ctx.setLineDash([8,7]); ctx.lineWidth=1.6; ctx.globalAlpha=.6;
-      for(let k=0;k<=frame;k++){ const x=tf.toX(data.tAxis[k]), y=tf.toY(data.W[k][i]); if(k===0)ctx.moveTo(x,y); else ctx.lineTo(x,y); }
-      ctx.stroke(); ctx.setLineDash([]); ctx.restore();
+      ctx.save();
+      ctx.beginPath();
+      ctx.strokeStyle=color;
+      ctx.setLineDash([8,7]);
+      ctx.lineWidth=1.6;
+      ctx.globalAlpha=.6;
+      for(let k=0;k<=frame;k++){
+        const x=tf.toX(data.tAxis[k]), y=tf.toY(data.W[k][i]);
+        if(k===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+      }
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.restore();
     }
 
-    const xcur=tf.toX(data.tAxis[frame]); ctx.save(); ctx.strokeStyle='#7e8cc2'; ctx.globalAlpha=.35; ctx.lineWidth=1;
-    ctx.beginPath(); ctx.moveTo(xcur, tf.pad); ctx.lineTo(xcur, tf.height - tf.pad); ctx.stroke(); ctx.restore();
+    // current time cursor
+    const xcur=tf.toX(data.tAxis[frame]);
+    ctx.save();
+    ctx.strokeStyle='#7e8cc2';
+    ctx.globalAlpha=.35;
+    ctx.lineWidth=1;
+    ctx.beginPath();
+    ctx.moveTo(xcur, tf.pad);
+    ctx.lineTo(xcur, tf.height - tf.pad);
+    ctx.stroke();
+    ctx.restore();
   }
 
   // App logic
@@ -368,7 +474,6 @@
     state.colors=makeColors(state.P.N);
     state.frame=0; state.paused=false; state.running=true;
 
-    drawPhaseStatic(state.P, state.tfPhase);
     drawPhaseDynamic(state.P, state.tfPhase, state.colors, state.data, state.frame);
     drawTime(state.P, state.tfTime, state.colors, state.data, state.frame);
 
@@ -383,8 +488,17 @@
     $('pauseBtn').textContent='Pause';
   }
 
-  function stop(){ if(state.timer){ clearInterval(state.timer); state.timer=null; } state.running=false; state.paused=false; }
-  function reset(){ for(const [k,v] of Object.entries(DEFAULTS)){ if($(k)) $(k).value=v; } start(); }
+  function stop(){
+    if(state.timer){ clearInterval(state.timer); state.timer=null; }
+    state.running=false; state.paused=false;
+  }
+
+  function reset(){
+    for(const [k,v] of Object.entries(DEFAULTS)){
+      if($(k)) $(k).value=v;
+    }
+    start();
+  }
 
   $('runBtn').addEventListener('click', start);
   $('resetBtn').addEventListener('click', reset);
