@@ -48,10 +48,10 @@
   <script defer src="js/v3-polyfill.min.js"></script>
 
   <style>
-    :root { 
-      --ink: #0d1021; 
+    :root {
+      --ink: #0d1021;
       --sim-blue: #0b3d91;      /* dark blue for Simulation */
-      --sim-blue-hover: #072c6a; 
+      --sim-blue-hover: #072c6a;
       --teach-gray: #6c757d;    /* gray for Teaching */
       --teach-gray-hover: #5a6268;
     }
@@ -153,8 +153,8 @@
       display: block;
     }
 
-    /* === The ONLY change you asked for earlier (affects ONLY the three buttons) === */
-    #btnSimulation, #btnHodgkin, #btnTeaching {
+    /* === Fancy small buttons (Simulation + Teaching) === */
+    #btnSimulation, #btnHodgkin, #btnGeneric2d, #btnTeaching {
       /* 0.7x size */
       font-size: 0.7rem !important;
       padding: 0.09rem 0.26rem !important;
@@ -174,27 +174,27 @@
       color: #fff !important;
       overflow: hidden;
     }
-    #btnSimulation:hover, #btnHodgkin:hover, #btnTeaching:hover {
+    #btnSimulation:hover, #btnHodgkin:hover, #btnGeneric2d:hover, #btnTeaching:hover {
       transform: translateY(-1px);
       background-position: 100% 0;
       box-shadow:
         0 10px 22px rgba(11, 61, 145, 0.30),
         0  4px  8px rgba(11, 61, 145, 0.35);
     }
-    #btnSimulation:active, #btnHodgkin:active, #btnTeaching:active {
+    #btnSimulation:active, #btnHodgkin:active, #btnGeneric2d:active, #btnTeaching:active {
       transform: translateY(0);
       box-shadow:
         0 4px 10px rgba(11, 61, 145, 0.25),
         0 1px  3px rgba(11, 61, 145, 0.35);
     }
-    #btnSimulation:focus-visible, #btnHodgkin:focus-visible, #btnTeaching:focus-visible {
+    #btnSimulation:focus-visible, #btnHodgkin:focus-visible, #btnGeneric2d:focus-visible, #btnTeaching:focus-visible {
       outline: none;
       box-shadow:
         0 0 0 3px rgba(42, 108, 214, 0.25),
         0 6px 14px rgba(11, 61, 145, 0.25);
     }
     /* subtle sheen on hover */
-    #btnSimulation::after, #btnHodgkin::after, #btnTeaching::after {
+    #btnSimulation::after, #btnHodgkin::after, #btnGeneric2d::after, #btnTeaching::after {
       content: "";
       position: absolute;
       top: 0; left: -150%;
@@ -204,11 +204,11 @@
       transition: left .6s ease;
       pointer-events: none;
     }
-    #btnSimulation:hover::after, #btnHodgkin:hover::after, #btnTeaching:hover::after {
+    #btnSimulation:hover::after, #btnHodgkin:hover::after, #btnGeneric2d:hover::after, #btnTeaching:hover::after {
       left: 150%;
     }
     /* icons via Font Awesome (no HTML changes) */
-    #btnSimulation::before, #btnHodgkin::before, #btnTeaching::before {
+    #btnSimulation::before, #btnHodgkin::before, #btnGeneric2d::before, #btnTeaching::before {
       font-family: "Font Awesome 5 Free";
       font-weight: 900;
       display: inline-block;
@@ -217,6 +217,7 @@
     }
     #btnSimulation::before { content: "\f83e"; } /* wave-square */
     #btnHodgkin::before   { content: "\f0e7"; } /* bolt */
+    #btnGeneric2d::before { content: "\f6cf"; } /* atom */
     #btnTeaching::before  { content: "\f201"; } /* chart-line */
   </style>
 
@@ -266,33 +267,33 @@
   </nav>
 
 </header>
-<section id="about" class="some-section"> 
-</section>     
+<section id="about" class="some-section">
+</section>
     <div class="container mt-1">
-      <div class="post"> 
-      <div class="profile float-right">    
-      <br /> 
-	   
-	<body onload="pickRandomBackground_a(); pickRandomBackground_b()">
-	  <div style="display:block;text-align:right">
-		<a href="https://medicine.yale.edu/profile/arman-afrasiyabi/" imageanchor="10">
-		  <img id="randomImage" align="right" src="./images/background_a2.jpg" style="max-width: 100%; border="100">
-		  <font size="+1"> <span style="font-weight: 420;">
-		  </a>
-		</div>
-	  </div> 
+      <div class="post">
+      <div class="profile float-right">
+      <br />
 
-	  &nbsp;  </font> <br /> 
+  <body onload="pickRandomBackground_a(); pickRandomBackground_b()">
+    <div style="display:block;text-align:right">
+    <a href="https://medicine.yale.edu/profile/arman-afrasiyabi/" imageanchor="10">
+      <img id="randomImage" align="right" src="./images/background_a2.jpg" style="max-width: 100%; border="100">
+      <font size="+1"> <span style="font-weight: 420;">
+      </a>
+    </div>
+    </div>
+
+    &nbsp;  </font> <br />
 
 <header class="post-header">
   <!-- Flex container: photo on the left, text on the right -->
   <div style="display:flex; align-items:center;">
-    
+
     <!-- Profile photo -->
     <img src="my_photo.png"
          alt="Arman Afrasiyabi"
          style="width:120px; height:120px; border-radius:50%; object-fit:cover; margin-right:15px;" />
-    
+
     <!-- Text block, shifted up so it starts around the photo’s midpoint -->
     <div style="transform:translateY(-2%);">
       <h1 class="post-title" style="margin:0;">
@@ -317,11 +318,11 @@
           </font>
         </p>
       </h1>
-    </div> 
+    </div>
   </div>
-</header> 
+</header>
     <article>
-        <div class="clearfix"></div> 
+        <div class="clearfix"></div>
         <!DOCTYPE html>
 <html>
 <head>
@@ -346,9 +347,9 @@
       <div class="profile float-right" style="margin-top:1px;">
         <div style="display:block;text-align:right">
           <a href="https://medicine.yale.edu/profile/arman-afrasiyabi/" imageanchor="10">
-            <img id="randomImageB" align="left" 
-                src="./images/background_b2.jpg" 
-                style="max-width:100%; border:0; margin-top:-20px;" 
+            <img id="randomImageB" align="left"
+                src="./images/background_b2.jpg"
+                style="max-width:100%; border:0; margin-top:-20px;"
                 alt="background b">
           </a>
           <font size="0">
@@ -361,7 +362,7 @@
       <p class="mt-4 mb-1">Contact:</p>
       <p style="margin-top:0.25rem;">
         <span style="display:inline-block; margin-left:2em;">arman.afrasiyabi@yale[dot]edu</span>
-      </p> 
+      </p>
     </div>
 
     <p style="margin: 0 0 100px 0;"></p>
@@ -389,16 +390,16 @@
   <div class="pubs-news-wrap">
     <!-- ===== LEFT: Publications (unchanged list) ===== -->
     <div class="pubs-col">
-      </b> </b>  
-      <div class="publications"> 
-        <h5><strong>Publications & preprints</strong></h5>  
+      </b> </b>
+      <div class="publications">
+        <h5><strong>Publications & preprints</strong></h5>
         <p style="margin: 0 0 20px 0;"></p>
 
         <ol class="bibliography">
           <li>
             <div class="row">
               <div class="col-sm-2 abbr">
-                <abbr class="badge z-depth-1 conference">biorxiv</abbr>  
+                <abbr class="badge z-depth-1 conference">biorxiv</abbr>
               </div>
               <div id="bengio2021proactivecontacttracing" class="col-sm-10">
                 <h2 class="title" style="font-size: 1rem;">CellSpliceNet: Interpretable Multimodal Modeling of Alternative Splicing Across Neurons</h2>
@@ -417,7 +418,7 @@
           <li>
             <div class="row">
               <div class="col-sm-2 abbr">
-                <abbr class="badge z-depth-1 conference">ICASSP</abbr>  
+                <abbr class="badge z-depth-1 conference">ICASSP</abbr>
               </div>
               <div id="bengio2021proactivecontacttracing" class="col-sm-10">
                 <h2 class="title" style="font-size: 1rem;">Latent representation learning for multimodal brain activity translation</h2>
@@ -435,11 +436,11 @@
           </li>
         </ol>
 
-        <ol class="bibliography"> 
+        <ol class="bibliography">
           <li>
             <div class="row">
               <div class="col-sm-2 abbr">
-                <abbr class="badge z-depth-1 conference">CCAM</abbr>  
+                <abbr class="badge z-depth-1 conference">CCAM</abbr>
               </div>
               <div id="bengio2021proactivecontacttracing" class="col-sm-10">
                 <h2 class="title" style="font-size: 1rem;">Looking through the mind's eye via multimodal encoder-decoder networks</h2>
@@ -461,7 +462,7 @@
           <li>
             <div class="row">
               <div class="col-sm-2 abbr">
-                <abbr class="badge z-depth-1 conference">ICCV</abbr>  
+                <abbr class="badge z-depth-1 conference">ICCV</abbr>
               </div>
               <div id="bengio2021proactivecontacttracing" class="col-sm-10">
                 <h2 class="title" style="font-size: 1rem;">DarSwin: distortion aware radial swin transformer</h2>
@@ -483,7 +484,7 @@
           <li>
             <div class="row">
               <div class="col-sm-2 abbr">
-                <abbr class="badge z-depth-1 conference">CVPR</abbr>  
+                <abbr class="badge z-depth-1 conference">CVPR</abbr>
               </div>
               <div id="bengio2021proactivecontacttracing" class="col-sm-10">
                 <h2 class="title" style="font-size: 1rem;">Matching feature sets for few-shot image classification</h2>
@@ -505,7 +506,7 @@
           <li>
             <div class="row">
               <div class="col-sm-2 abbr">
-                <abbr class="badge z-depth-1 conference">ICCV</abbr>  
+                <abbr class="badge z-depth-1 conference">ICCV</abbr>
               </div>
               <div id="bengio2021proactivecontacttracing" class="col-sm-10">
                 <h2 class="title" style="font-size: 1rem;">Mixture-based feature space learning for few-shot image classification</h2>
@@ -527,8 +528,8 @@
           <li>
             <div class="row">
               <div class="col-sm-2 abbr">
-                <abbr class="badge z-depth-1 conference">ECCV</abbr> 
-                <abbr class="badge z-depth-1 award">Spotlight</abbr> 
+                <abbr class="badge z-depth-1 conference">ECCV</abbr>
+                <abbr class="badge z-depth-1 award">Spotlight</abbr>
               </div>
               <div id="bengio2021proactivecontacttracing" class="col-sm-10">
                 <h2 class="title" style="font-size: 1rem;">Associative alignment for few-shot image classification</h2>
@@ -550,7 +551,7 @@
           <li>
             <div class="row">
               <div class="col-sm-2 abbr">
-                <abbr class="badge z-depth-1 conference">ICASSP</abbr>  
+                <abbr class="badge z-depth-1 conference">ICASSP</abbr>
               </div>
               <div id="bengio2021proactivecontacttracing" class="col-sm-10">
                 <h2 class="title" style="font-size: 1rem;">Non-euclidean vector product for neural networks</h2>
@@ -574,7 +575,7 @@
           <li>
             <div class="row">
               <div class="col-sm-2 abbr">
-                <abbr class="badge z-depth-1 conference">ICCI*CC</abbr>  
+                <abbr class="badge z-depth-1 conference">ICCI*CC</abbr>
               </div>
               <div id="bengio2021proactivecontacttracing" class="col-sm-10">
                 <h2 class="title" style="font-size: 1rem;">A sparse temporal mesh model for brain decoding</h2>
@@ -587,11 +588,11 @@
                   <em>15th International Conference on Cognitive Informatics & Cognitive, 2016</em>
                 </div>
                 <div class="links">
-                  <a href="https://ieeexplore.ieee.org/abstract/document/7862035" class="btn btn-sm z-depth-0" role="button" target="_blank">paper</a>   
+                  <a href="https://ieeexplore.ieee.org/abstract/document/7862035" class="btn btn-sm z-depth-0" role="button" target="_blank">paper</a>
                 </div>
               </div>
             </div>
-          </li>  
+          </li>
         </ol>
 
         [<a href="https://scholar.google.com/citations?hl=en&user=eLmbCr8AAAAJ&view_op=list_works&sortby=pubdate" target="_blank" title="Google Scholar"><i class="ai ai-google-scholar pl-1 pr-1"></i><a>] see my <a href="https://scholar.google.com/citations?hl=en&user=eLmbCr8AAAAJ&view_op=list_works&sortby=pubdate">Google Scholar</a> for all the publications.
@@ -601,27 +602,27 @@
     <!-- ===== RIGHT: Simulation & Teaching panels ===== -->
     <aside class="news-col">
 
-    <!-- Teaching panel -->
+      <!-- Teaching panel -->
       <div class="panel-card">
         <h5><strong>Teaching</strong></h5>
         <div>
-          <button id="btnTeaching" class="btn btn-teach btn-half" type="button" title="Open sample lecture (PDF)">Gradient Descent </button>
-        </div> 
+          <button id="btnTeaching" class="btn btn-teach btn-half" type="button" title="Open sample lecture (PDF)">Gradient Descent</button>
+        </div>
       </div>
-    
+
       <!-- Simulation panel -->
       <div class="panel-card">
         <h5><strong>Simulation</strong></h5>
         <div class="d-flex flex-wrap" style="gap:.5rem;">
+          <button id="btnGeneric2d" class="btn btn-sim btn-half" type="button">Generic 2D Oscillator</button>
           <button id="btnSimulation" class="btn btn-sim btn-half" type="button">FitzHugh–Nagumo</button>
           <button id="btnHodgkin" class="btn btn-sim btn-half" type="button">Hodgkin–Huxley</button>
-        </div> 
+        </div>
       </div>
 
-      
     </aside>
   </div>
-</section>   
+</section>
 <!-- ===================== END PUBLICATIONS + RIGHT COLUMN ===================== -->
 
     <!-- TEACHING EXPERIENCE -->
@@ -671,11 +672,7 @@
             <li>At <strong>CVPR</strong> 2022, we are presenting Matching feature sets for few-shot image classification.</li>
             <li>In 12th Feb. 2022, upon the invitation (<a href="https://www.linkedin.com/posts/computer-vision-talks_cvtarmanafrasiyabi-activity-6897768952760807424-Fb-B">invitation link</a>) of <strong>Computer Vision Talks</strong>, I presented our MixtFSL.</li>
             <li>At <strong>ICCV</strong> 2021, I am presenting Mixture-based feature space learning for few-shot... <a href="https://www.youtube.com/watch?v=DxMCHCQKDCQ">[video]</a></li>
-            <li>On 26, Feb 2021, I presented Transformers to Prof. <a href="./pdfs/ArmanPresentation_Transfoermers.pdf">Jean-François Lalonde's</a> research group. <a href="./pdfs/ArmanPresentation_Transfoermers.pdf">[my slides]</a></li>
-            <li>In Feb 2021, I gave a presentation on PMM and Ass. Alignment at <a href="https://iid.hbw01.fsg.ulaval.ca/evenements/seminaire-iid-associative-alignment-for-few-shot-image-classification/">IID</a>, Université Laval. <a href="./pdfs/ArmanPresentation_8Feb2020_IID.pdf">[my slides]</a></li>
-            <li>At <strong>ECCV</strong> 2020, I presented our work “Associative Alignment for Few-shot Classification”. <a href="https://lvsn.github.io/associative-alignment/">[video]</a></li>
-            <li>In July 2020, I gave a talk on "Advances in few-shot learning" at the IFT 6501 course. <a href="./pdfs/26-6-2020 advances in few-shot learning .pdf">[my slides]</a></li>
-            <li>In March 2020, I gave a talk on my last research project at IID</li>
+            <li>On 26, Feb 2021, upon the invitation of Prof. Jean-François Lalonde, I presented Transformers to his research group.</li>
           </ul>
         </div>
       </div>
@@ -688,15 +685,7 @@
         <h3><strong>Reports and proposal</strong></h3>
         <div class="home">
           <ul style="font-size: 0.9rem;">
-            <li>At the end of the first year of the M.S. (under the initial supervision of Prof. <a href="https://eee.metu.edu.tr/personel/ilkay-ulusoy">Ilkay Ulusoy</a>), I prepared three reports on dynamic causal modeling (DCM) of the human brain:
-              <a href="./pdfs/DCM Report I (Arman Afrasiyabi).pdf"><strong>[Report I]</strong></a>,
-              <a href="./pdfs/DCM Report II(Arman Afrasiyabi).pdf"><strong>[Report II]</strong></a>,
-              and <a href="./pdfs/DCM Report III(Arman Afrasiyabi).pdf"><strong>[Report III]</strong></a>.
-            </li>
-            <li>At the second year of my Ph.D., I successfully passed my <strong>PhD.</strong> exams:
-              <a href="./pdfs/2019,01,16 Only_Presentation for PhDProposal (Arman Afrasiyabi).pdf">[presentation]</a> and
-              <a href="https://github.com/ArmanAfrasiya...">[proposal]</a>.
-            </li>
+            <li>At the end of the first year of the M.S. I prepared three reports on dynamic causal modeling (DCM).</li>
           </ul>
         </div>
       </div>
@@ -830,6 +819,17 @@
           simFrame.src = 'simulation/HodgkinHuxley.htm';
           var label = document.getElementById('simModalLabel');
           if (label) label.textContent = 'Hodgkin–Huxley Simulation';
+          $('#simModal').modal('show');
+        });
+      }
+
+      // Generic 2D Oscillator button
+      var g2dBtn = document.getElementById('btnGeneric2d');
+      if (g2dBtn && simFrame) {
+        g2dBtn.addEventListener('click', function () {
+          simFrame.src = 'simulation/Generic2dOcilator.htm';
+          var label = document.getElementById('simModalLabel');
+          if (label) label.textContent = 'Generic 2D Oscillator Simulation';
           $('#simModal').modal('show');
         });
       }
