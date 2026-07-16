@@ -43,7 +43,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px 8px;
+      padding: 20px 6px;
       font-family: Arial, Helvetica, sans-serif;
       color: var(--text);
       background: var(--background);
@@ -77,15 +77,21 @@
       color: var(--muted);
     }
 
-    .position-line {
-      display: block;
+    .position-wrapper {
       width: 100%;
-      font-size: clamp(0.53rem, 2.65vw, 1.22rem);
-      line-height: 1.35;
+      padding: 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .position-line {
+      display: inline-block;
+      max-width: none;
+      font-size: 1.22rem;
+      line-height: 1.3;
       letter-spacing: -0.025em;
       white-space: nowrap;
-      overflow-wrap: normal;
-      word-break: keep-all;
+      transform-origin: center center;
     }
 
     .specialty-line {
@@ -137,22 +143,12 @@
     }
 
     @media (max-width: 420px) {
-      body {
-        padding-left: 6px;
-        padding-right: 6px;
-      }
-
       main {
         transform: translateY(-70px);
       }
 
       h1 {
         font-size: clamp(1.05rem, 5.1vw, 1.35rem);
-      }
-
-      .position-line {
-        font-size: 2.65vw;
-        letter-spacing: -0.03em;
       }
 
       .specialty-line {
@@ -163,13 +159,6 @@
         font-size: 0.84rem;
       }
     }
-
-    @media (max-width: 340px) {
-      .position-line {
-        font-size: 2.55vw;
-        letter-spacing: -0.035em;
-      }
-    }
   </style>
 </head>
 
@@ -177,10 +166,17 @@
   <main>
     <h1><strong>Arman Afrasiyabi</strong>, Ph.D.</h1>
 
-    <p class="title">
-      <span class="position-line">Assistant Professor at Yale University — AI Scientist and Engineer</span>
-      <span class="specialty-line">Developing Foundation Models &amp; Neural Methods</span>
-    </p>
+    <div class="title">
+      <div class="position-wrapper">
+        <span class="position-line" id="positionLine">
+          Assistant Professor at Yale University — AI Scientist and ML Engineer
+        </span>
+      </div>
+
+      <span class="specialty-line">
+        Developing Brain Foundation Models &amp; Neural Decoding Methods
+      </span>
+    </div>
 
     <div class="contact">
       <a class="email" href="mailto:arman.afrasiyabi@yale.edu">
@@ -218,6 +214,43 @@
   </main>
 
   <script>
+    function fitPositionLine() {
+      const line = document.getElementById("positionLine");
+      const wrapper = line.parentElement;
+
+      const maxSize = 19.52;
+      const minSize = 9;
+      const availableWidth = wrapper.clientWidth - 2;
+
+      line.style.fontSize = maxSize + "px";
+
+      let low = minSize;
+      let high = maxSize;
+      let best = minSize;
+
+      while (high - low > 0.1) {
+        const middle = (low + high) / 2;
+        line.style.fontSize = middle + "px";
+
+        if (line.scrollWidth <= availableWidth) {
+          best = middle;
+          low = middle;
+        } else {
+          high = middle;
+        }
+      }
+
+      line.style.fontSize = best + "px";
+    }
+
+    window.addEventListener("load", fitPositionLine);
+    window.addEventListener("resize", fitPositionLine);
+    window.addEventListener("orientationchange", fitPositionLine);
+
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(fitPositionLine);
+    }
+
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", function () {
         navigator.serviceWorker.register("./sw.js").catch(function () {});
