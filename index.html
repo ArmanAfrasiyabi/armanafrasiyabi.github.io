@@ -6,6 +6,14 @@
   <meta name="description" content="Arman Afrasiyabi, Ph.D. — Assistant Professor in the Department of Neurosurgery at Yale University and AI scientist.">
   <title>Arman Afrasiyabi, Ph.D.</title>
 
+  <meta name="theme-color" content="#ffffff">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Arman Afrasiyabi">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
   <style>
     :root {
       --text: #151515;
@@ -78,7 +86,7 @@
     .specialty-line {
       display: block;
       margin-top: 2px;
-      font-size: clamp(0.78rem, 1.5vw, 0.94rem);
+      font-size: clamp(0.72rem, 1.35vw, 0.88rem);
     }
 
     @media (max-width: 420px) {
@@ -161,5 +169,13 @@
       <a href="https://github.com/armanafrasiyabi" target="_blank" rel="noopener noreferrer">GitHub</a>
     </nav>
   </main>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('./sw.js').catch(function () {});
+      });
+    }
+  </script>
 </body>
 </html>
