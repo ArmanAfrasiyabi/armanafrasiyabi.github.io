@@ -20,12 +20,15 @@
 
     html,
     body {
+      width: 100%;
       min-height: 100%;
       margin: 0;
+      overflow-x: hidden;
     }
 
     body {
       min-height: 100vh;
+      min-height: 100dvh;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -38,7 +41,7 @@
 
     main {
       width: 100%;
-      max-width: 860px;
+      max-width: min(860px, calc(100vw - 24px));
       transform: translateY(-74px);
     }
 
@@ -66,9 +69,10 @@
 
     .position-line {
       display: block;
-      white-space: nowrap;
+      max-width: 100%;
       font-size: clamp(0.72rem, 2.6vw, 1.12rem);
       letter-spacing: -0.015em;
+      overflow-wrap: anywhere;
     }
 
     .specialty-line {
@@ -84,7 +88,13 @@
       }
 
       main {
+        max-width: calc(100vw - 16px);
         transform: translateY(-70px);
+      }
+
+      .position-line {
+        white-space: normal;
+        line-height: 1.45;
       }
     }
 
