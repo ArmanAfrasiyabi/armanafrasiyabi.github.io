@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Arman Afrasiyabi, Ph.D. — Assistant Professor in the Department of Neurosurgery at Yale University and AI scientist.">
+  <meta name="description" content="Arman Afrasiyabi, Ph.D. — Assistant Professor at Yale University and AI scientist and engineer.">
   <title>Arman Afrasiyabi, Ph.D.</title>
 
   <meta name="theme-color" content="#ffffff">
@@ -11,6 +11,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Arman Afrasiyabi">
+
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
 
@@ -74,7 +75,6 @@
       color: var(--muted);
     }
 
-
     .position-line {
       display: block;
       max-width: 100%;
@@ -87,23 +87,6 @@
       display: block;
       margin-top: 2px;
       font-size: clamp(0.72rem, 1.35vw, 0.88rem);
-    }
-
-    @media (max-width: 420px) {
-      body {
-        padding-left: 8px;
-        padding-right: 8px;
-      }
-
-      main {
-        max-width: calc(100vw - 16px);
-        transform: translateY(-70px);
-      }
-
-      .position-line {
-        white-space: normal;
-        line-height: 1.45;
-      }
     }
 
     .contact {
@@ -144,6 +127,23 @@
     .links a:focus {
       color: var(--accent);
     }
+
+    @media (max-width: 420px) {
+      body {
+        padding-left: 8px;
+        padding-right: 8px;
+      }
+
+      main {
+        max-width: calc(100vw - 16px);
+        transform: translateY(-70px);
+      }
+
+      .position-line {
+        white-space: normal;
+        line-height: 1.45;
+      }
+    }
   </style>
 </head>
 
@@ -152,8 +152,8 @@
     <h1><strong>Arman</strong> Afrasiyabi, Ph.D.</h1>
 
     <p class="title">
-      <span class="position-line">Assistant Professor in the Department of Neurosurgery at Yale University</span>
-      <span class="specialty-line">AI Scientist and Engineer</span>
+      <span class="position-line">Assistant Professor at Yale University | AI Scientist and Engineer</span>
+      <span class="specialty-line">Brain Foundation Models and Neural Decoding</span>
     </p>
 
     <div class="contact">
@@ -163,17 +163,38 @@
     </div>
 
     <nav class="links" aria-label="Professional profiles">
-      <!-- <a href="https://medicine.yale.edu/profile/arman-afrasiyabi/" target="_blank" rel="noopener noreferrer">Yale Profile</a> -->
-      <a href="https://scholar.google.com/citations?hl=en&amp;user=eLmbCr8AAAAJ&amp;view_op=list_works&amp;sortby=pubdate" target="_blank" rel="noopener noreferrer">Google Scholar</a>
-      <a href="https://www.linkedin.com/in/arman-afrasiyabi-40b48810b/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-      <a href="https://github.com/armanafrasiyabi" target="_blank" rel="noopener noreferrer">GitHub</a>
+      <!--
+      <a href="https://medicine.yale.edu/profile/arman-afrasiyabi/"
+         target="_blank"
+         rel="noopener noreferrer">
+        Yale Profile
+      </a>
+      -->
+
+      <a href="https://scholar.google.com/citations?hl=en&amp;user=eLmbCr8AAAAJ&amp;view_op=list_works&amp;sortby=pubdate"
+         target="_blank"
+         rel="noopener noreferrer">
+        Google Scholar
+      </a>
+
+      <a href="https://www.linkedin.com/in/arman-afrasiyabi-40b48810b/"
+         target="_blank"
+         rel="noopener noreferrer">
+        LinkedIn
+      </a>
+
+      <a href="https://github.com/armanafrasiyabi"
+         target="_blank"
+         rel="noopener noreferrer">
+        GitHub
+      </a>
     </nav>
   </main>
 
   <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function () {
-        navigator.serviceWorker.register('./sw.js').catch(function () {});
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("./sw.js").catch(function () {});
       });
     }
   </script>
